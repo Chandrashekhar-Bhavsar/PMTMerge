@@ -30,6 +30,12 @@ app = Flask(__name__)
 cors = CORS(app)
 CORS(app, origins='*')
 
+
+@app.route('/')
+def home():
+    return '<h1>Welcome Team :To the POC YJB</h1>'
+
+
 ############################################################
 #                       workflow module                    #
 ############################################################
