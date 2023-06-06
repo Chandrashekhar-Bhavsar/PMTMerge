@@ -506,8 +506,8 @@ def deletetask(task_id):
         cursor.execute(query, values)
         mydb.commit()
         return jsonify({"message": "Task Deleted successfully"}), 200
- 
- def create_issue(Issue_name, Description):
+
+def create_issue(Issue_name, Description):
         query = "INSERT INTO issue_details (issue_name, description) VALUES (%s, %s)"
         values = (Issue_name, Description)
         cursor.execute(query, values)
