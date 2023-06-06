@@ -452,7 +452,7 @@ def create_project_query(project_name, project_description,
                   planned_hours, actual_hours, status, project_lead, 
                   client_name, risk, mitigation):
         cursor = mydb.cursor()
-        query = "INSERT INTO project_details (Project_Name, Project_Description, Planned_SD, Planned_ED,Actual_SD, Actual_ED, Planned_Hours, Actual_Hours, Status, Project_Lead, Client_Name, Risk, Mitigation) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO Project_Details (Project_Name, Project_Description, Planned_SD, Planned_ED,Actual_SD, Actual_ED, Planned_Hours, Actual_Hours, Status, Project_Lead, Client_Name, Risk, Mitigation) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         values = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation)
         cursor.execute(query, values)
