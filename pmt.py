@@ -72,6 +72,7 @@ def pm_loginn():
         users = cursor.fetchone()
         logging.debug(dt_string+"Password Checking Query executed sucessfully")
         logging.debug(dt_string+"Query result is ",users)
+        token = jwt.encode({"username": "Email_ID"}, "secret", algorithm="HS256")
         if not users:
             logging.debug(dt_string+"Password is not valid")
             return jsonify({'error': 'Password is invalid'}), 400
@@ -80,7 +81,6 @@ def pm_loginn():
         if flag==flag2==True:
             logging.debug(dt_string+"Email id and ppassword is valid")
             logging.debug(dt_string+"Login api execution completed no error occur")
-            token = jwt.encode({"username": "Email_ID"}, "secret", algorithm="HS256")
             # token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256').decode('utf-8')
             return jsonify({"Return": "login successful","token": token}), 200
 
