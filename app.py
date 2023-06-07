@@ -9,7 +9,6 @@ from queries import *
 from workflow import *
 from Filter import *
 from connection import *
-from queries import *
 from Comments_Module import *
 from issue import *
 from pmt import *
@@ -33,25 +32,6 @@ app = Flask(__name__)
 cors = CORS(app)
 CORS(app, origins='*')
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        
-        if not token:
-            return jsonify({'message': 'Token is missing'}), 401
-        
-        try:
-            # Verify and decode the token
-            data = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
-            # Add the decoded token data to the request context if needed
-            
-        except jwt.InvalidTokenError:
-            return jsonify({'message': 'Invalid token'}), 401
-
-        return f(*args, **kwargs)
-
-    return decorated
 
 
 
@@ -66,7 +46,7 @@ def home():
 
 
 @app.route('/GetWorkFlow', methods=['POST'])
-@token_required
+#@token_required
 def GetWorkFlow():
     return getwf()
 
@@ -116,12 +96,12 @@ def pm_login():
 
 
 @app.route('/create_project', methods=['POST'])
-@token_required
+#@token_required
 def create_project():
     return create_projects()
 
 @app.route('/ProjectList', methods=['GET'])
-@token_required
+#@token_required
 def ProjectList():
     return get_cardprojectdetails()
 
