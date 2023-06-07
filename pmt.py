@@ -47,13 +47,13 @@ def pm_loginn():
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
-        logging.debug(dt_string + " Checking for valid password")
-        query = "SELECT * FROM Users WHERE Password=%s"
-        values = (Password,)
-        cursor.execute(query, values)
-        users = cursor.fetchone()
-        logging.debug(dt_string + " Password Checking Query executed successfully")
-        logging.debug(dt_string + " Query result is ", users)
+            logging.debug(dt_string + " Checking for valid password")
+            query = "SELECT * FROM Users WHERE Password=%s"
+            values = (Password,)
+            cursor.execute(query, values)
+            users = cursor.fetchone()
+            logging.debug(dt_string + " Password Checking Query executed successfully")
+            logging.debug(dt_string + " Query result is ", users)
         if not users:
             logging.debug(dt_string + " Password is not valid")
             return jsonify({'error': 'Password is invalid'}), 400
