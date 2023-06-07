@@ -17,12 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN chown -R 1001:0 /app
 USER 1001
 
-# Expose the port on which the application will run (optional)
-EXPOSE 8080
+# Expose the port on which the application will run
+EXPOSE 5000
 
 # Set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
 # Start the Flask application
-CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["flask", "run"]
