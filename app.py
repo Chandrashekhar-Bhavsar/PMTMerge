@@ -17,6 +17,9 @@ from UserManagement_module import *
 import datetime
 from datetime import datetime
 import logging
+import jwt
+from functools import wraps
+from functools import wraps
 
 import datetime
 from datetime import datetime
@@ -30,6 +33,27 @@ app = Flask(__name__)
 cors = CORS(app)
 CORS(app, origins='*')
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 401
+        
+        try:
+            # Verify and decode the token
+            data = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+            # Add the decoded token data to the request context if needed
+            
+        except jwt.InvalidTokenError:
+            return jsonify({'message': 'Invalid token'}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
 
 @app.route('/')
 def home():
@@ -42,6 +66,7 @@ def home():
 
 
 @app.route('/GetWorkFlow', methods=['POST'])
+@token_required
 def GetWorkFlow():
     return getwf()
 
@@ -86,14 +111,17 @@ bcrypt = Bcrypt(app)
 
 @app.route('/login', methods=['POST'])
 def pm_login():
+        
     return pm_loginn()
 
 
 @app.route('/create_project', methods=['POST'])
+@token_required
 def create_project():
     return create_projects()
 
 @app.route('/ProjectList', methods=['GET'])
+@token_required
 def ProjectList():
     return get_cardprojectdetails()
 
