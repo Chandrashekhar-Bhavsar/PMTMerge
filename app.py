@@ -43,26 +43,27 @@ def home():
 #                       workflow module                    #
 ############################################################
 
+app.secret_key = 'your_secret_key'  # Set a secret key for session management
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
-        
+
         if not token:
             return jsonify({'message': 'Token is missing'}), 401
-        
+
         try:
             # Verify and decode the token
-            data = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+            data = jwt.decode(token, app.secret_key, algorithms=['HS256'])
             # Add the decoded token data to the request context if needed
-            
+
         except jwt.InvalidTokenError:
             return jsonify({'message': 'Invalid token'}), 401
 
         return f(*args, **kwargs)
 
     return decorated
-
 
 @app.route('/GetWorkFlow', methods=['POST'])
 #@token_required
