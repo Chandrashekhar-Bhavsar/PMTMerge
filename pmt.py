@@ -192,7 +192,7 @@ def ProjectDetails():
         data = request.get_json()
         pm_id = data['project_id']
         cursor = mydb.cursor()
-        query = "SELECT * FROM project_details where project_id=%s; "
+        query = "SELECT * FROM Project_Details where project_id=%s; "
         values=(pm_id,)
         cursor.execute(query,values)
         projects = cursor.fetchall()
