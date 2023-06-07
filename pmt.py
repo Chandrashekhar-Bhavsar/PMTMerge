@@ -110,9 +110,18 @@ def get_cardprojectdetails():
         query = "SELECT * FROM Project_Details;"
         cursor.execute(query)
         projects = cursor.fetchall()
-        print(projects)
+            # Get the column names
+        columns = cursor.column_names
+         # Fetch all rows
+        rows = cursor.fetchall()
+        # Create a list of dictionaries where column names are keys and row values are values
+        results = []
+        for row in rows:
+            row_dict = {column: value for column, value in zip(columns, row)}
+        results.append(row_dict)
+        print(row_dict)
         print("query executed successfully")
-        return jsonify(projects)
+        return jsonify(row_dict)
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'})
