@@ -118,7 +118,7 @@ def get_cardprojectdetails():
                     'Project_name': project[1],
                     'description': project[2],
                     'planned_sd':project[3],
-                    'planned _ed':project[4],
+                    'planned_ed':project[4],
                     'Actual_sd' : project[5],
                     'Actual_ed' : project[6],
                     'planned_hours':project[7],
