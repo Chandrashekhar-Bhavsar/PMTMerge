@@ -1,5 +1,7 @@
 
 from flask import Flask, jsonify, request
+import jwt
+from functools import wraps
 import mysql.connector
 from flask_cors import CORS,cross_origin
 import bcrypt
@@ -16,9 +18,6 @@ from UserManagement_module import *
 import datetime
 from datetime import datetime
 import logging
-import jwt
-from functools import wraps
-from functools import wraps
 
 import datetime
 from datetime import datetime
@@ -44,7 +43,7 @@ def home():
 #                       workflow module                    #
 ############################################################
 
-'''def token_required(f):
+def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
@@ -62,7 +61,8 @@ def home():
 
         return f(*args, **kwargs)
 
-    return decorated'''
+    return decorated
+
 
 @app.route('/GetWorkFlow', methods=['POST'])
 #@token_required
