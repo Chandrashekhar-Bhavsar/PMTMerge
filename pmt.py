@@ -109,17 +109,13 @@ def get_cardprojectdetails():
         cursor = mydb.cursor()
         query = "SELECT * FROM Project_Details;"
         cursor.execute(query)
-        projects = cursor.fetchall()
-            # Get the column names
         columns = cursor.column_names
-         # Fetch all rows
         rows = cursor.fetchall()
         # Create a list of dictionaries where column names are keys and row values are values
         results = []
         for row in rows:
             row_dict = {column: value for column, value in zip(columns, row)}
-        results.append(row_dict)
-        print(row_dict)
+            results.append(row_dict)
         print("query executed successfully")
         return jsonify(row_dict)
     except Exception as e:
