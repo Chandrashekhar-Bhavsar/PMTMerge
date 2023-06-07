@@ -1,5 +1,5 @@
-# Use the official Python base image
-FROM python:3.9
+# Use the Red Hat Universal Base Image for Python 3.9
+FROM registry.access.redhat.com/ubi8/python-39
 
 # Set the working directory in the container
 WORKDIR /app
@@ -24,5 +24,5 @@ EXPOSE 8080
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Start the Flask application using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app", "--log-level", "debug"]
+# Start the Flask application
+CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8080"]
