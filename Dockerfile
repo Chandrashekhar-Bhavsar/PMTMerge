@@ -1,5 +1,5 @@
 # Use a locally available Python 3.9 image
-FROM python:3.9-slim
+FROM python
 
 # Set the working directory in the container
 WORKDIR /app
