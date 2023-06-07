@@ -30,40 +30,39 @@ def pm_loginn():
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " User has made a call for login api")
-        logging.debug(dt_string + "Inside the Login api ")
+        logging.debug(dt_string + " Inside the Login api ")
         data = request.get_json()
         Email_ID = data['email_id']
         Password = data['password']
         cursor = mydb.cursor()
-        logging.debug(dt_string + "Checking for valid email")
-        query = "SELECT * FROM Users WHERE Email_ID=%s"
-        values = (Email_ID,)
-        cursor.execute(query, values)
-        users = cursor.fetchone()
-        logging.debug(dt_string + "Email Checking Query executed successfully")
-        logging.debug(dt_string + "Query result is ", users)
-        if not users:
-            logging.debug(dt_string + "Email id is not valid")
+        logging.debug(dt_string + " Checking for valid email")
+        query2 = "SELECT * FROM Users WHERE Email_ID=%s"
+        values2 = (Email_ID,)
+        cursor.execute(query2, values2)
+        users2 = cursor.fetchone()
+        logging.debug(dt_string + " Email Checking Query executed successfully")
+        logging.debug(dt_string + " Query result is ", users2)
+        if not users2:
+            logging.debug(dt_string + " Email id is not valid")
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
-        logging.debug(dt_string + "Checking for valid password")
+        logging.debug(dt_string + " Checking for valid password")
         query = "SELECT * FROM Users WHERE Password=%s"
         values = (Password,)
         cursor.execute(query, values)
         users = cursor.fetchone()
-        logging.debug(dt_string + "Password Checking Query executed successfully")
-        logging.debug(dt_string + "Query result is ", users)
+        logging.debug(dt_string + " Password Checking Query executed successfully")
+        logging.debug(dt_string + " Query result is ", users)
         if not users:
-            logging.debug(dt_string + "Password is not valid")
+            logging.debug(dt_string + " Password is not valid")
             return jsonify({'error': 'Password is invalid'}), 400
         else:
             flag2 = True
-        if flag == flag2 == True:
-            logging.debug(dt_string + "Email id and password are valid")
-            logging.debug(dt_string + "Login api execution completed no error occur")
-            #token = jwt.encode({'username': Email_ID}, app.secret_key, algorithm='HS256').decode('utf-8')
-            return jsonify({'msg': "login sucessfull"}), 200
+        if flag and flag2:
+            logging.debug(dt_string + " Email id and password are valid")
+            logging.debug(dt_string + " Login api execution completed without errors")
+            return jsonify({'msg': "login successful"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
