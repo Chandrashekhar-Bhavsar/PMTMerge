@@ -7,8 +7,8 @@ WORKDIR /app
 # Upgrade pip
 RUN pip install --no-cache-dir --upgrade pip
 
-# Copy the application code to the container
-COPY . .
+# Copy the application code to the container and change ownership
+COPY --chown=1001:0 . .
 
 # Install the project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
