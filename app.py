@@ -44,7 +44,7 @@ def home():
 #                       workflow module                    #
 ############################################################
 
-def token_required(f):
+'''def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
@@ -62,7 +62,7 @@ def token_required(f):
 
         return f(*args, **kwargs)
 
-    return decorated
+    return decorated'''
 
 @app.route('/GetWorkFlow', methods=['POST'])
 #@token_required
