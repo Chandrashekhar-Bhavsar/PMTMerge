@@ -18,7 +18,7 @@ RUN chown -R 1001:0 /app
 USER 1001
 
 # Expose the port on which the application will run (optional)
-EXPOSE 8080
+EXPOSE 5000
 
 # Set environment variables
 ENV FLASK_APP=app.py
