@@ -42,7 +42,7 @@ def home():
 ############################################################
 #                       workflow module                    #
 ############################################################
-
+'''
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
 
 def token_required(f):
@@ -64,7 +64,7 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
-
+'''
 @app.route('/GetWorkFlow', methods=['POST'])
 #@token_required
 def GetWorkFlow():
