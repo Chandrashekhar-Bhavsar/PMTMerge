@@ -59,13 +59,14 @@ def pm_loginn():
             else:
                 flag2 = True
         if flag and flag2:
-            query3 = "SELECT * FROM Users WHERE Password=%s,Email_ID=%s"
+            query3 = "SELECT * FROM Users WHERE Password=%s and Email_ID=%s"
             values3 = (Password,Email_ID)
             cursor.execute(query3, values3)
             users3 = cursor.fetchall()
             logging.debug(dt_string + " Email id and password are valid")
             logging.debug(dt_string + " Login api execution completed without errors")
-            return jsonify({'msg': "login successful","user_detail":users3}), 200
+            token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256')
+            return jsonify({'msg': "login successful"},{"user_detail":users3},{'token': token}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
