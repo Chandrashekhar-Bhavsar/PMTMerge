@@ -16,8 +16,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 file = open("myfile.txt","w")
 
-app = Flask(__name__)
-cors = CORS(app)
+
 
 
 
@@ -39,7 +38,7 @@ def pm_loginn():
         query2 = "SELECT * FROM Users WHERE Email_ID=%s"
         values2 = (Email_ID,)
         cursor.execute(query2, values2)
-        users2 = cursor.fetchone()
+        users2 = cursor.fetchone()[0]
         logging.debug(dt_string + " Email Checking Query executed successfully")
         logging.debug(dt_string + " Query result is ", users2)
         if not users2:
@@ -51,7 +50,7 @@ def pm_loginn():
             query = "SELECT * FROM Users WHERE Password=%s"
             values = (Password,)
             cursor.execute(query, values)
-            users = cursor.fetchone()
+            users = cursor.fetchone()[0]
             logging.debug(dt_string + " Password Checking Query executed successfully")
             logging.debug(dt_string + " Query result is ", users)
         if not users:
@@ -372,5 +371,4 @@ def delete_task():
 
 
     
-if __name__ == "__main__":
-    app.run(debug=True,port=5000)
+
