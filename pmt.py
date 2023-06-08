@@ -38,7 +38,7 @@ def pm_loginn():
         query2 = "SELECT * FROM Users WHERE Email_ID=%s"
         values2 = (Email_ID,)
         cursor.execute(query2, values2)
-        users2 = cursor.fetchone()[0]
+        users2 = cursor.fetchone()
         logging.debug(dt_string + " Email Checking Query executed successfully")
         logging.debug(dt_string + " Query result is ", users2)
         if not users2:
@@ -50,14 +50,14 @@ def pm_loginn():
             query = "SELECT * FROM Users WHERE Password=%s"
             values = (Password,)
             cursor.execute(query, values)
-            users = cursor.fetchone()[0]
+            users = cursor.fetchone()
             logging.debug(dt_string + " Password Checking Query executed successfully")
             logging.debug(dt_string + " Query result is ", users)
-        if not users:
-            logging.debug(dt_string + " Password is not valid")
-            return jsonify({'error': 'Password is invalid'}), 400
-        else:
-            flag2 = True
+            if not users:
+                logging.debug(dt_string + " Password is not valid")
+                return jsonify({'error': 'Password is invalid'}), 400
+            else:
+                flag2 = True
         if flag and flag2:
             logging.debug(dt_string + " Email id and password are valid")
             logging.debug(dt_string + " Login api execution completed without errors")
