@@ -35,33 +35,37 @@ def pm_loginn():
         Password = data['password']
         cursor = mydb.cursor()
         logging.debug(dt_string + " Checking for valid email")
-        query2 = "SELECT * FROM Users WHERE Email_ID=%s"
-        values2 = (Email_ID,)
-        cursor.execute(query2, values2)
-        users2 = cursor.fetchone()
+        query1 = "SELECT * FROM Users WHERE Email_ID=%s"
+        values1 = (Email_ID,)
+        cursor.execute(query1, values1)
+        users1 = cursor.fetchone()
         logging.debug(dt_string + " Email Checking Query executed successfully")
-        logging.debug(dt_string + " Query result is ", users2)
-        if not users2:
+        logging.debug(dt_string + " Query result is ", users1)
+        if not users1:
             logging.debug(dt_string + " Email id is not valid")
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
             logging.debug(dt_string + " Checking for valid password")
-            query = "SELECT * FROM Users WHERE Password=%s"
-            values = (Password,)
-            cursor.execute(query, values)
-            users = cursor.fetchone()
+            query2 = "SELECT * FROM Users WHERE Password=%s"
+            values2 = (Password,)
+            cursor.execute(query2, values2)
+            users2 = cursor.fetchone()
             logging.debug(dt_string + " Password Checking Query executed successfully")
-            logging.debug(dt_string + " Query result is ", users)
-            if not users:
+            logging.debug(dt_string + " Query result is ", users2)
+            if not users2:
                 logging.debug(dt_string + " Password is not valid")
                 return jsonify({'error': 'Password is invalid'}), 400
             else:
                 flag2 = True
         if flag and flag2:
+            query3 = "SELECT * FROM Users WHERE Password=%s,Email_ID=%s"
+            values3 = (Password,Email_ID)
+            cursor.execute(query3, values3)
+            users3 = cursor.fetchall()
             logging.debug(dt_string + " Email id and password are valid")
             logging.debug(dt_string + " Login api execution completed without errors")
-            return jsonify({'msg': "login successful"}), 200
+            return jsonify({'msg': "login successful","user_detail":users3}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
