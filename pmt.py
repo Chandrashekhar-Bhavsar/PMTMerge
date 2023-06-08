@@ -162,9 +162,11 @@ def create_projects():
 
 def get_cardprojectdetails():
     try:
+        data = request.get_json()
+        project_name = data['user_id']
         print("inside the function")
         cursor = mydb.cursor()
-        query = "SELECT * FROM Project_Details;"
+        query = "SELECT * FROM Project_Details p join project_member m on m.Project_ID=p.Project_ID  where user_id=%s;"
         cursor.execute(query)
         columns = cursor.column_names
         projects = cursor.fetchall()
