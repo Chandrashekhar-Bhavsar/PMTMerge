@@ -441,17 +441,24 @@ def delete_comments(comment_id):
 
 
 
-def create_project_query(project_name, project_description, 
+def create_project_query(User_id,project_name, project_description, 
                    planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, 
                   client_name, risk, mitigation):
         cursor = mydb.cursor()
-        query = "INSERT INTO Project_Details (Project_Name, Project_Description, Planned_SD, Planned_ED,Actual_SD, Actual_ED, Planned_Hours, Actual_Hours, Status, Project_Lead, Client_Name, Risk, Mitigation) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
+        query1 = "INSERT INTO Project_Details (Project_Name, Project_Description, Planned_SD, Planned_ED,Actual_SD, Actual_ED, Planned_Hours, Actual_Hours, Status, Project_Lead, Client_Name, Risk, Mitigation) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        values1 = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation)
-        cursor.execute(query, values)
+        cursor.execute(query1, values1)
         mydb.commit()
-
+        query2 =  "select project_id from Project_Details where project_name = %s;"
+        values2 = (project_name,)
+        cursor.execute(query2,values2)
+        id =cursor.fetchone()
+        query3 = "Insert into project_member(user_id,project_id) values(%s,%s);"
+        values3 = (User_id,id)
+        cursor.execute(query3,values3)
+        mydb.commit()
         return jsonify({"message": "Project created successfully"}), 200
 
 
