@@ -1,7 +1,7 @@
 l=[["a",'b','c','d'],['e','f','g','h'],['k','m']]
 my_dict = {sublist[0]: sublist[1:] for sublist in l}
 print(my_dict)
-keys = my_dict.keys()
+'''keys = my_dict.keys()
 print(keys)
 dis={}
 m=[]
@@ -10,4 +10,4 @@ for i in l:
         print(j)
         if j==0:
             g=m.append(i(j))
-            dis["key"]=g
+            dis["key"]'''

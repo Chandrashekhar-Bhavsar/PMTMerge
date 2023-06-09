@@ -19,13 +19,6 @@ def user_add(name, email_id,hashed_password, contact,role):#add role after test3
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside user_add function.....")
-        query="select 1 from Users where email_id=%s;"
-        values=(email_id,)
-        cursor.execute(query,values)
-        id=cursor.fetchone()
-        if not id:
-               return jsonify({"error":"email already exists."}),400
-
         logging.debug(dt_string + " Adding the users details into the database...")
         query = "INSERT INTO Users ( Name, Email_ID, password ,Contact,role) VALUES (%s, %s, %s,%s,%s);" #add role after test
         values = ( name, email_id,hashed_password, contact,role)#add role after test
