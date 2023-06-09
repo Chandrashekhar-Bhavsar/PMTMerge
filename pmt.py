@@ -137,14 +137,15 @@ def create_projects():
         data = request.get_json()
         logging.debug(dt_string+"payload comming from frontend ")
         print(data)
+        User_id=data['user_id']
         project_name = data['project_name']
         project_description = data['project_description']
         planned_sd = data['planned_sd']
         planned_ed = data['planned_ed']
-        actual_sd = '2023-07-06'#data['actual_sd']
-        actual_ed = '2023-07-06'#data['actual_ed']
-        planned_hours = "30 hour" #data['planned_hours']
-        actual_hours = "30 hour"#data['actual_hours']""
+        actual_sd = '2020-01-01 10:10:10'#data['actual_sd']
+        actual_ed = '2020-01-01 10:10:10'#data['actual_ed']
+        planned_hours = "0" #data['planned_hours']
+        actual_hours = "0"#data['actual_hours']""
         status = "To_Do"#data['status']
         project_lead = data['project_lead']
         client_name = data['client_name']
@@ -153,7 +154,7 @@ def create_projects():
         workflowTask=data['workflowTask']
         workflowDefects2=data['workflowDefects']
         logging.debug(dt_string+"Calling create project query function ")
-        return create_project_query(project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
+        return create_project_query(User_id,project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                                     planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation)
 
     except Exception as e:
