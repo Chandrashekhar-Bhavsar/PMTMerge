@@ -61,8 +61,6 @@ def adduser():
             return jsonify({"error": "Missing 'email_id' in request data"}), 400
         if "contact" not in data:
             return jsonify({"error": "Missing 'contact' in request data"}), 400
-        if "role" not in data:
-            return jsonify({"error": "Missing 'role' in request data"}), 400
 
         name = data['name']
         
@@ -70,7 +68,7 @@ def adduser():
         
         contact = data['contact']
 
-        role = data['role']
+        role = "User"
         
         if  not is_valid_name(name):
             return jsonify({"error":"Invalid Name....Name can't start from Number,Can be a alphanumeric,special characters are not allowed"}),400
@@ -80,7 +78,7 @@ def adduser():
             return jsonify({"error":"Invalid Contact Number."}),400
         
 
-        query="select 1 from users where email_id=%s;"
+        query="select 1 from Users where email_id=%s;"
         values=(email_id,)
         cursor.execute(query,values)
         id=cursor.fetchone()
@@ -143,7 +141,7 @@ def adduser():
        
         hashed_password = bcrypt.generate_password_hash(otp).decode('utf-8')
 
-        logging.debug(dt_string + " calling user_add function to update the database....")
+        logging.debug(dt_string + " calling User_add function to update the database....")
 
         return user_add(name, email_id,hashed_password, contact,role)  #add role 
 
