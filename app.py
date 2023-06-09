@@ -120,7 +120,7 @@ def pm_login():
 def create_project():
     return create_projects()
 
-@app.route('/ProjectList', methods=['GET'])
+@app.route('/ProjectList', methods=['POST'])
 #@token_required
 def ProjectList():
     return get_cardprojectdetails()
