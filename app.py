@@ -179,7 +179,7 @@ def update_projectwise_comments():
 def update_issuewise_comments():
     return update_issuewisecomments()
     
-@app.route('/show_user', methods=['POST'])
+@app.route('/show_user', methods=['GET'])
 def show_user():
     return showuser()
 

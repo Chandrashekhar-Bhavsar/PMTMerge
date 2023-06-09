@@ -36,7 +36,7 @@ def user_show():
             dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
             logging.debug(dt_string + " Inside user_show function.....")
             logging.debug(dt_string+"showing all the users")
-            query = "select user_id,name,email_id,contact,role from Users;"
+            query = "select user_id,name,email_id,contact,roles from Users;"
             cursor.execute(query)
             id=cursor.fetchall()
             user_list = []
