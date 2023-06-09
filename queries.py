@@ -455,8 +455,9 @@ def create_project_query(User_id,project_name, project_description,
         values2 = (project_name,)
         cursor.execute(query2,values2)
         id =cursor.fetchone()
+        print(id[0])
         query3 = "Insert into project_member(user_id,project_id) values(%s,%s);"
-        values3 = (User_id,id)
+        values3 = (User_id,id[0])
         cursor.execute(query3,values3)
         mydb.commit()
         return jsonify({"message": "Project created successfully"}), 200
