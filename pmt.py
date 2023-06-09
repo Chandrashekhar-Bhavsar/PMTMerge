@@ -66,7 +66,7 @@ def pm_loginn():
             logging.debug(dt_string + " Email id and password are valid")
             logging.debug(dt_string + " Login api execution completed without errors")
             token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256')
-            return jsonify({'msg': "login successful"},{"user_detail":users3},{'token': token}), 200
+            return jsonify({'msg': "login successful","user_detail":users3,'token': token}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -192,7 +192,7 @@ def get_cardprojectdetails():
         return jsonify(project_list)
     except Exception as e:
         print("An error occurred:", str(e))
-        return jsonify({'error': 'An error occurred while fetching project details'})
+        return jsonify({'error': 'An error occurred while fetching project details'}), 400
 
 
 ################################################################################################################    
