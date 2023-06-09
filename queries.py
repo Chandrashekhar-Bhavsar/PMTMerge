@@ -19,7 +19,7 @@ def user_add(name, email_id,hashed_password, contact,role):#add role after test3
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside user_add function.....")
-        query="select 1 from users where email_id=%s;"
+        query="select 1 from Users where email_id=%s;"
         values=(email_id,)
         cursor.execute(query,values)
         id=cursor.fetchone()
@@ -27,7 +27,7 @@ def user_add(name, email_id,hashed_password, contact,role):#add role after test3
                return jsonify({"error":"email already exists."}),400
 
         logging.debug(dt_string + " Adding the users details into the database...")
-        query = "INSERT INTO users ( Name, Email_ID, password ,Contact,role) VALUES (%s, %s, %s,%s,%s);" #add role after test
+        query = "INSERT INTO Users ( Name, Email_ID, password ,Contact,role) VALUES (%s, %s, %s,%s,%s);" #add role after test
         values = ( name, email_id,hashed_password, contact,role)#add role after test
         cursor.execute(query, values)
         mydb.commit()
@@ -43,7 +43,7 @@ def user_show():
             dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
             logging.debug(dt_string + " Inside user_show function.....")
             logging.debug(dt_string+"showing all the users")
-            query = "select user_id,name,email_id,contact,role from users;"
+            query = "select user_id,name,email_id,contact,role from Users;"
             cursor.execute(query)
             id=cursor.fetchall()
             user_list = []
@@ -70,7 +70,7 @@ def user_assign(project_id,user_ID,role_in_project):
             dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
             logging.debug(dt_string + " Inside user_assign function.....")
 
-            query="select * from project_details where project_id=%s"
+            query="select * from Project_Details where project_id=%s"
             values=(project_id,)
             cursor.execute(query,values)
             a=cursor.fetchall()
@@ -79,7 +79,7 @@ def user_assign(project_id,user_ID,role_in_project):
             logging.debug(dt_string + " Inside user_assign ")
 
             
-            query="select * from users where user_id=%s"
+            query="select * from Users where user_id=%s"
             values=(user_ID,)
             cursor.execute(query,values)
             a=cursor.fetchall()
@@ -132,7 +132,7 @@ def project_commentadd(project_id,description,user_id):
         logging.debug(dt_string + " Inside project_commentadd function .....")
         logging.debug(dt_string +  " Adding comment to the project....")
 
-        query = "select Name from users where user_id =%s"
+        query = "select Name from Users where user_id =%s"
         values = (user_id,)
         cursor.execute(query,values)
         a_name=cursor.fetchone()
