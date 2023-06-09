@@ -20,7 +20,7 @@ def user_add(name, email_id,hashed_password, contact,role):#add role after test3
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside user_add function.....")
         logging.debug(dt_string + " Adding the users details into the database...")
-        query = "INSERT INTO Users ( Name, Email_ID, password ,Contact,role) VALUES (%s, %s, %s,%s,%s);" #add role after test
+        query = "INSERT INTO Users ( Name, Email_ID, password ,Contact,roles) VALUES (%s, %s, %s,%s,%s);" #add role after test
         values = ( name, email_id,hashed_password, contact,role)#add role after test
         cursor.execute(query, values)
         mydb.commit()
