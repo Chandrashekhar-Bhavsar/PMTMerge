@@ -164,12 +164,12 @@ def create_projects():
 def get_cardprojectdetails():
     try:
         data = request.get_json()
-        project_name = data['user_id']
+        User_id = data['user_id']
         print("inside the function")
         cursor = mydb.cursor()
-        query = "SELECT * FROM Project_Details p join project_member m on m.Project_ID=p.Project_ID  where user_id=%s;"
-        cursor.execute(query)
-        columns = cursor.column_names
+        query = "SELECT * FROM Project_Details p join project_member m on m.Project_ID=p.Project_ID  where m.user_id=%s;"
+        value=(User_id,)
+        cursor.execute(query,value)
         projects = cursor.fetchall()
         project_list = []
         for project in projects:
@@ -190,7 +190,7 @@ def get_cardprojectdetails():
                     "mitigation":project[13]
                 }
             project_list.append(project_dict)
-        return jsonify(project_list)
+        return jsonify(project_list),200
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
