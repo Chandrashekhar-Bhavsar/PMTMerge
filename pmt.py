@@ -38,35 +38,31 @@ def pm_loginn():
         query1 = "SELECT * FROM Users WHERE Email_ID=%s"
         values1 = (Email_ID,)
         cursor.execute(query1, values1)
-        users1 = cursor.fetchone()
+        user = cursor.fetchone()
         logging.debug(dt_string + " Email Checking Query executed successfully")
-        logging.debug(dt_string + " Query result is ", users1)
-        if not users1:
+        logging.debug(dt_string + " Query result is ", user)
+        if not user:
             logging.debug(dt_string + " Email id is not valid")
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
-            logging.debug(dt_string + " Checking for valid password")
-            query2 = "SELECT * FROM Users WHERE Password=%s"
-            values2 = (Password,)
-            cursor.execute(query2, values2)
-            users2 = cursor.fetchone()
-            logging.debug(dt_string + " Password Checking Query executed successfully")
-            logging.debug(dt_string + " Query result is ", users2)
-            if not users2:
-                logging.debug(dt_string + " Password is not valid")
-                return jsonify({'error': 'Password is invalid'}), 400
-            else:
-                flag2 = True
+
+        hashed_password = user['Password'].decode('utf-8')  
+        if bcrypt.checkpw(Password.encode('utf-8'), hashed_password.encode('utf-8')):
+            flag2 = True
+        else:
+            logging.debug(dt_string, "Password is not valid")
+            return jsonify({'error': 'Password is invalid'}), 400
+
         if flag and flag2:
             query3 = "SELECT * FROM Users WHERE Password=%s and Email_ID=%s"
-            values3 = (Password,Email_ID)
+            values3 = (Password, Email_ID)
             cursor.execute(query3, values3)
             users3 = cursor.fetchall()
             logging.debug(dt_string + " Email id and password are valid")
             logging.debug(dt_string + " Login api execution completed without errors")
-            token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256')
-            return jsonify({'msg': "login successful","user_detail":users3,'token': token}), 200
+            token = jwt.encode({'username': Email_ID}, 'your_secret_key', algorithm='HS256')
+            return jsonify({'msg': "login successful", "user_detail": users3, 'token': token}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -160,6 +156,33 @@ def create_projects():
     except Exception as e:
         # Handle other exceptions
         return jsonify({'error': str(e)}), 500
+    
+def Assign_User():
+    try:
+        data = request.get_json()
+        Email_id = data['email_id']
+        Project_id = data['project_id']
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside user_add function.....")
+        logging.debug(dt_string + " Adding the users details into the database...")
+        query1 = "select user_ID from Users VALUES (%s);" #add role after test
+        values1 = (Email_id,)
+        cursor.execute(query1, values1)
+        u_id=cursor.fectone()
+        print(u_id)
+        if not u_id:
+            return jsonify({"Error":"No user found"}), 200
+        else:
+            query2 = "INSERT INTO project_member VALUES (%s, %s);" #add role after test
+            values2 = ( u_id,Project_id)#add role after test
+            cursor.execute(query2, values2)
+            mydb.commit()
+            logging.debug(dt_string + " Details successfully updated into the database....")
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return jsonify({'error': 'An error occurred while fetching project details'}), 400
+
 
 def get_cardprojectdetails():
     try:
