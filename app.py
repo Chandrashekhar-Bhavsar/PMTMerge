@@ -75,6 +75,11 @@ def StatusUpdate():
     return statusupdate()
 
 
+@app.route('/AssignUser', methods=['POST'])
+def AssignUser():
+    return Assign_User()
+
+
 @app.route('/GetWorkflowIssue', methods=['POST'])
 def GetWorkflowIssue():
     return getworkflowussue()

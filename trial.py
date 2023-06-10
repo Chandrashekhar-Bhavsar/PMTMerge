@@ -1,15 +1,14 @@
+import hashlib
 
+def generate_hashed_password(password):
+    # Hash the password using SHA-256
+    sha256_hash = hashlib.sha256()
+    sha256_hash.update(password.encode('utf-8'))
+    hashed_password = sha256_hash.hexdigest()
+    return hashed_password
 
-arrY = [["START", "IN PROGRESS", "REVIEW", "DONE"],
-        ["REVIEW", "RESOLVED", "DONE"],
-        ["DONE", "RE-OPENED", "RE-ASSIGN", "IN PROGRESS"],
-        ["DONE", "COMPLETED"]]
+# Example usage
+password = "6cac36"
+hashed_password=hashlib.sha256(password.encode('utf-8')).hexdigest()
 
-for sublist in arrY:
-    pairs = zip(sublist, sublist[1:])
-    for pair in pairs:
-        print(pair)
-        current_state=pair[0]
-        next_state=pair[1]
-        print("current state",current_state)
-        print("next_state",next_state)
+print(hashed_password)

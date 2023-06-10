@@ -4,15 +4,24 @@ from functools import wraps
 
 import mysql.connector
 from flask_cors import CORS,cross_origin
-import bcrypt
-from flask_bcrypt import bcrypt
 from connection import *
 from queries import *
 import datetime
 from datetime import datetime
 import logging
-
 logging.basicConfig(level=logging.DEBUG)
+app = Flask(__name__)
+cors = CORS(app)
+CORS(app, origins='*')
+
+import hashlib
+
+def generate_hashed_password(password):
+    # Hash the password using SHA-256
+    sha256_hash = hashlib.sha256()
+    sha256_hash.update(password.encode('utf-8'))
+    hashed_password = sha256_hash.hexdigest()
+    return hashed_password
 
 file = open("myfile.txt","w")
 
@@ -47,7 +56,9 @@ def pm_loginn():
         else:
             flag = True
             logging.debug(dt_string + " Checking for valid password")
-            hashed_password=bcrypt.generate_password_hash(Password).decode('utf-8')
+            print("original password is",Password)
+            hashed_password =hashlib.sha256(Password.encode('utf-8')).hexdigest()
+            print("password is :", hashed_password)
             query2 = "SELECT * FROM Users WHERE Password=%s"
             values2 = (hashed_password,)
             cursor.execute(query2, values2)
