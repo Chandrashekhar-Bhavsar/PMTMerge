@@ -8,7 +8,7 @@ def generate_hashed_password(password):
     return hashed_password
 
 # Example usage
-password = "6cac36"
+password = "123"
 hashed_password=hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 print(hashed_password)

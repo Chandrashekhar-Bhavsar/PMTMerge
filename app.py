@@ -150,6 +150,7 @@ def create_tasks():
 def update_tasks():
     return update_task() 
 
+
 @app.route('/add_user', methods=['POST'])
 def add_user():
     return adduser()
@@ -159,6 +160,10 @@ def add_user():
 def assign_user():
    return assignuser()
    
+
+@app.route('/userdetails_project', methods=['POST'])
+def user_details_project():
+    return get_users_from_project()
 
 @app.route('/add_project_comment', methods=['POST'])
 def add_project_comment():

@@ -15,14 +15,6 @@ cors = CORS(app)
 CORS(app, origins='*')
 
 import hashlib
-
-def generate_hashed_password(password):
-    # Hash the password using SHA-256
-    sha256_hash = hashlib.sha256()
-    sha256_hash.update(password.encode('utf-8'))
-    hashed_password = sha256_hash.hexdigest()
-    return hashed_password
-
 file = open("myfile.txt","w")
 
 
@@ -139,7 +131,7 @@ def Assign_User():
         u_id=cursor.fectone()
         print(u_id)
         if not u_id:
-            return jsonify({"Error":"No user found"}), 200
+            return jsonify({"Error":"No user found"}), 400
         else:
             query2 = "INSERT INTO project_member VALUES (%s, %s);" #add role after test
             values2 = ( u_id,Project_id)#add role after test
@@ -150,6 +142,39 @@ def Assign_User():
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
 
+
+def get_users_from_project():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " User has made a call to retrieve users from a project")
+        data = request.get_json()
+        project_id = data['project_id']
+        cursor = mydb.cursor()
+        query = "SELECT Users.* FROM Users JOIN project_member ON Users.user_ID = project_member.user_ID WHERE project_member.Project_ID = %s"
+        values = (project_id,)
+        cursor.execute(query, values)
+        users = cursor.fetchall()
+
+        if not users:
+            return jsonify({'error': 'No users found for the project'}), 400
+        
+        user_list = []
+        for user in users:
+            user_info = {
+                'user_id': user[0],
+                'role': user[1],
+                'name': user[2],
+                'email': user[3],
+                'contact': user[4]
+            }
+            user_list.append(user_info)
+
+        logging.debug(dt_string + " Users retrieved successfully")
+        return jsonify({'users': user_list}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 def get_cardprojectdetails():
     try:
