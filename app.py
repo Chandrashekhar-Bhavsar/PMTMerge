@@ -65,10 +65,10 @@ def token_required(f):
 
     return decorated
 
-@app.route('/GetWorkFlow', methods=['POST'])
+@app.route('/AddWorkFlow', methods=['POST'])
 #@token_required
-def GetWorkFlow():
-    return getwf()
+def AddWorkFlow():
+    return addwf()
 
 @app.route('/StatusUpdate', methods=['POST'])
 def StatusUpdate():
@@ -78,6 +78,12 @@ def StatusUpdate():
 @app.route('/GetWorkflowIssue', methods=['POST'])
 def GetWorkflowIssue():
     return getworkflowussue()
+
+
+@app.route('/GetWorkflow', methods=['POST'])
+def GetWorkflow():
+    return getworkflow()
+
 
 ############################################################
 #                       Issue module                       #

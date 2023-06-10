@@ -14,34 +14,9 @@ cursor=mydb.cursor()
 
 logging.basicConfig(level=logging.DEBUG)
 
-'''def getwf():
-    try:
-        now = datetime.now()
-        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string+" User has made a call for GetWorkFlow api")
-        logging.debug(dt_string+" Inside the GetWorkFlow api ")
-        data = request.get_json()
-        logging.debug(dt_string+" payload received from frontend is ")
-        print(data)
-        wf = str(data["wf"])
-        current_state = str(data["curr"])
-        prev_state = str(data["prev"])
-        next_state = str(data["succ"])
-        print(next_state.isdigit())
-        if (next_state.isdigit() or prev_state.isdigit() or current_state.isdigit() or wf.isdigit() ):
-            return jsonify({"error": "numerical entries"}), 400
-        query = "INSERT INTO workflow VALUES (%s, %s, %s, %s)"
-        values = (wf, prev_state, current_state, next_state)
-        cursor.execute(query, values)
-        mydb.commit()
-        logging.debug(dt_string+" Query Exectued successfully ")
-        logging.debug(dt_string+" GetWorkFlow API is executed successfully")
-        return jsonify({"msg": "inserted"}), 200 
-    except Exception as e:
-        return jsonify({"error": "bad values"}), 400'''
 
 
-def getwf():
+def addwf():
     try:
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
@@ -70,6 +45,23 @@ def getwf():
         return jsonify({"msg": "inserted"}), 200 
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
+    
+def getworkflow():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string+" User has made a call for GetWorkFlow api")
+        logging.debug(dt_string+" Inside the GetWorkFlow api ")
+        logging.debug(dt_string+" payload received from frontend is ")
+        query = "Select * from workflow "
+        cursor.execute(query, )
+        workflow_list=cursor.fetchall()
+        logging.debug(dt_string+" Query Exectued successfully ")
+        logging.debug(dt_string+" GetWorkFlow API is executed successfully")
+        return jsonify({"workflow": workflow_list}), 200 
+    except Exception as e:
+        return jsonify({"error": "bad values"}), 400
+
   
         
 
