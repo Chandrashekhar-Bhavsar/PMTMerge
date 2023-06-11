@@ -125,7 +125,7 @@ def Assign_User():
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside user_add function.....")
         logging.debug(dt_string + " Adding the users details into the database...")
-        query1 = "select user_ID from Users VALUES (%s);" #add role after test
+        query1 = "select user_ID from Users where email_id=%s;" 
         values1 = (Email_id,)
         cursor.execute(query1, values1)
         u_id=cursor.fectone()
