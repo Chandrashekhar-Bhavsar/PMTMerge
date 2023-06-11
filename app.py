@@ -158,7 +158,7 @@ def add_user():
 
 @app.route('/assign_user', methods=['POST'])
 def assign_user():
-   return assignuser()
+   return Assign_User()
    
 
 @app.route('/userdetails_project', methods=['POST'])
