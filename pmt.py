@@ -128,16 +128,17 @@ def Assign_User():
         query1 = "select user_ID from Users where email_id=%s;" 
         values1 = (Email_id,)
         cursor.execute(query1, values1)
-        u_id=cursor.fectone()
+        u_id=cursor.fetchone()
         print(u_id)
         if not u_id:
             return jsonify({"Error":"No user found"}), 400
         else:
-            query2 = "INSERT INTO project_member VALUES (%s, %s);" #add role after test
-            values2 = ( u_id,Project_id)#add role after test
+            query2 = "INSERT INTO project_member(user_ID,Project_ID) VALUES (%s, %s);" #add role after test
+            values2 = ( u_id[0],Project_id)#add role after test
             cursor.execute(query2, values2)
             mydb.commit()
             logging.debug(dt_string + " Details successfully updated into the database....")
+            return jsonify({'msg':"Data Inserted"}), 200
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
