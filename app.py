@@ -80,11 +80,6 @@ def AssignUser():
 def GetWorkflowIssue():
     return getworkflowussue()
 
-@app.route('/show', methods=['GET'])
-def show2():
-    return show()
-
-
 @app.route('/GetWorkflow', methods=['POST'])
 def GetWorkflow():
     return getworkflow()

@@ -25,36 +25,6 @@ def addwf():
         data = request.get_json()
         logging.debug(dt_string+" payload received from frontend is ")
         print(data)
-        arrays=data["array"]
-        print(arrays)
-        wf = str(data["wf"])
-        for sublist in arrays:
-            pairs = zip(sublist, sublist[1:])
-            for pair in pairs:
-                print(pair)
-                current_state=pair[0]
-                next_state=pair[1]
-                print("current state",current_state)
-                print("next_state",next_state)
-                query = "INSERT INTO workflow VALUES (%s, %s, %s)"
-                values = (wf, current_state, next_state)
-                cursor.execute(query, values)
-                mydb.commit()
-                logging.debug(dt_string+" Query Exectued successfully ")
-                logging.debug(dt_string+" GetWorkFlow API is executed successfully")
-        return jsonify({"msg": "inserted"}), 200 
-    except Exception as e:
-        return jsonify({"error": "bad values"}), 400
-    
-def getworkflow():
-    try:
-        now = datetime.now()
-        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string+" User has made a call for GetWorkFlow api")
-        logging.debug(dt_string+" Inside the GetWorkFlow api ")
-        data = request.get_json()
-        logging.debug(dt_string+" payload received from frontend is ")
-        print(data)
         arrays=str(data["array"])
         print(arrays)
         wf = str(data["wf"])
@@ -67,10 +37,8 @@ def getworkflow():
         return jsonify({"msg": "inserted"}), 200 
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
-
-  
-
-def show():
+    
+def getworkflow():
     try:
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
@@ -98,6 +66,7 @@ def show():
         return output
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
+
 
 
 def statusupdate():
