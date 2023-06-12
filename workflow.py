@@ -20,15 +20,15 @@ def addwf():
     try:
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string+" User has made a call for GetWorkFlow api")
-        logging.debug(dt_string+" Inside the GetWorkFlow api ")
+        logging.debug(dt_string+" User has made a call for addworkflow api")
+        logging.debug(dt_string+" Inside the addworkflow api ")
         data = request.get_json()
         logging.debug(dt_string+" payload received from frontend is ")
         print(data)
         arrays=str(data["array"])
-        print(arrays)
+        print("recived array is ",arrays)
         wf = str(data["wf"])
-        query = "INSERT INTO workflow VALUES (%s, %s)"
+        query = "INSERT INTO workflow(workflow_name,workflow) VALUES (%s, %s)"
         values = (wf, arrays)
         cursor.execute(query, values)
         mydb.commit()
@@ -37,6 +37,7 @@ def addwf():
         return jsonify({"msg": "inserted"}), 200 
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
+
     
 def getworkflow():
     try:
@@ -45,25 +46,54 @@ def getworkflow():
         logging.debug(dt_string+" User has made a call for GetWorkFlow api")
         logging.debug(dt_string+" Inside the GetWorkFlow api ")
         logging.debug(dt_string+" payload received from frontend is ")
+        data = request.get_json()
+        wfn=data["wfn"]
         query = "Select * from workflow"
+        #values=(wfn,)
         cursor.execute(query,)
         out=cursor.fetchall()
-        dis={}
+       
+        print("sql query output",out)
+        print(out[0])
+        array_list=[]   
         for i in out:
-            dis={"workflow":i[1]}
-        
-        out=dis["workflow"]
-        print("output",out)
+            dis={"array_name":i[0],"array":i[1]}
+            array_list.append(dis)
 
+
+        return jsonify(array_list)
+    except Exception as e:
+        return jsonify({"error": "bad values"}), 400
+    
+def GetWorkfloByName():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string+" User has made a call for GetWorkfloByName api")
+        logging.debug(dt_string+" Inside the GetWorkfloByName api ")
+        logging.debug(dt_string+" payload received from frontend is ")
+        data = request.get_json()
+        wfn=data["wfn"]
+        query = "Select workflow from workflow where workflow_name=%s"
+        values=(wfn,)
+        cursor.execute(query,values)
+        out=cursor.fetchall()
+        
+        print("sql query output",out[0][0])
+     
         import ast
         import json
-        print(str(out))
-        input_string = str(out)
+
+        input_string = out[0][0]
 
         input_list = ast.literal_eval(input_string)
         output = json.dumps(input_list)
+
         print(output)
-        return output
+
+
+
+        return jsonify(out[0][0])
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
 

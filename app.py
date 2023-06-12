@@ -66,6 +66,14 @@ def token_required(f):
 def AddWorkFlow():
     return addwf()
 
+@app.route('/GetWorkflow', methods=['POST'])
+def GetWorkflow():
+    return getworkflow()
+
+@app.route('/GetWorkflowByName', methods=['POST'])
+def GetWorkflow():
+    return GetWorkfloByName()
+
 @app.route('/StatusUpdate', methods=['POST'])
 def StatusUpdate():
     return statusupdate()
@@ -80,9 +88,7 @@ def AssignUser():
 def GetWorkflowIssue():
     return getworkflowussue()
 
-@app.route('/GetWorkflow', methods=['POST'])
-def GetWorkflow():
-    return getworkflow()
+
 
 
 ############################################################
