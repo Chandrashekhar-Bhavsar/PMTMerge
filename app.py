@@ -66,13 +66,16 @@ def token_required(f):
 def AddWorkFlow():
     return addwf()
 
-@app.route('/GetWorkflow', methods=['POST'])
+
+@app.route('/GetWorkflow', methods=['GET'])
 def GetWorkflow():
     return getworkflow()
 
+
 @app.route('/GetWorkflowByName', methods=['POST'])
-def GetWorkflow():
-    return GetWorkfloByName()
+def GetWorkflowByName():
+    return GetWorkFloByName()
+
 
 @app.route('/StatusUpdate', methods=['POST'])
 def StatusUpdate():

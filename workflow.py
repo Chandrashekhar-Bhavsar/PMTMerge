@@ -9,6 +9,8 @@ from workflow import *
 import datetime
 from datetime import datetime
 import logging
+import ast
+import json
 mydb=connect_db()
 cursor=mydb.cursor()
 
@@ -80,19 +82,10 @@ def GetWorkFloByName():
         out=cursor.fetchall()
         
         print("sql query output",out[0][0])
-     
-        import ast
-        import json
-
         input_string = out[0][0]
-
         input_list = ast.literal_eval(input_string)
         output = json.dumps(input_list)
-
         print(output)
-
-
-
         return jsonify(out[0][0])
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
