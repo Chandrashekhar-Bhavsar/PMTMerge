@@ -52,18 +52,52 @@ def getworkflow():
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string+" User has made a call for GetWorkFlow api")
         logging.debug(dt_string+" Inside the GetWorkFlow api ")
+        data = request.get_json()
         logging.debug(dt_string+" payload received from frontend is ")
-        query = "Select * from workflow "
-        cursor.execute(query, )
-        workflow_list=cursor.fetchall()
+        print(data)
+        arrays=str(data["array"])
+        print(arrays)
+        wf = str(data["wf"])
+        query = "INSERT INTO workflow VALUES (%s, %s)"
+        values = (wf, arrays)
+        cursor.execute(query, values)
+        mydb.commit()
         logging.debug(dt_string+" Query Exectued successfully ")
         logging.debug(dt_string+" GetWorkFlow API is executed successfully")
-        return jsonify({"workflow": workflow_list}), 200 
+        return jsonify({"msg": "inserted"}), 200 
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
 
   
+
+def show():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string+" User has made a call for GetWorkFlow api")
+        logging.debug(dt_string+" Inside the GetWorkFlow api ")
+        logging.debug(dt_string+" payload received from frontend is ")
+        query = "Select * from workflow"
+        cursor.execute(query,)
+        out=cursor.fetchall()
+        dis={}
+        for i in out:
+            dis={"workflow":i[1]}
         
+        out=dis["workflow"]
+        print("output",out)
+
+        import ast
+        import json
+        print(str(out))
+        input_string = str(out)
+
+        input_list = ast.literal_eval(input_string)
+        output = json.dumps(input_list)
+        print(output)
+        return output
+    except Exception as e:
+        return jsonify({"error": "bad values"}), 400
 
 
 def statusupdate():
