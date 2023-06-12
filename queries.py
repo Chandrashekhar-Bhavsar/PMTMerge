@@ -490,7 +490,7 @@ def create_project_query(User_id,project_name, project_description,
 def update_project_details(project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation, project_id):
         cursor = mydb.cursor()
-        query = "UPDATE project_details SET project_name = %s, project_description = %s, planned_sd = %s, planned_ed = %s,actual_sd = %s,actual_ed = %s,planned_hours = %s,actual_hours =%s,status = %s,project_lead = %s,client_name = %s,risk = %s,mitigation = %s where project_id = %s"
+        query = "UPDATE Project_Details SET project_name = %s, project_description = %s, planned_sd = %s, planned_ed = %s,actual_sd = %s,actual_ed = %s,planned_hours = %s,actual_hours =%s,status = %s,project_lead = %s,client_name = %s,risk = %s,mitigation = %s where project_id = %s"
         values = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation, project_id)
         cursor.execute(query, values)
