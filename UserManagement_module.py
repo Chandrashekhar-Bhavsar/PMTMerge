@@ -210,7 +210,7 @@ def showuser():
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside show user api...")
-       
+
         return user_show()
 
     except KeyError as e:
@@ -275,7 +275,54 @@ def delete_users():
             return jsonify({"error": "An error occurred: " + str(e)}), 500
 
 
+def user_useridwise():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside update_issuewise_comments api....")
+        data = request.get_json()
+
+        if "user_id" not in data:
+            return jsonify({"error": "Missing 'user_id' in request data"}), 400
     
+
+        logging.debug(dt_string + " Accepting values to update ")
+
+        
+        user_id=data["user_id"]
+     
+        if(type(user_id) is not int):
+            return jsonify({"error":"user_id must be integer"}),400
+
+        query="Select name, email_id , contact from Users where user_id = %s;"
+        values=(user_id,)
+        cursor.execute(query,values)
+        id=cursor.fetchall()
+        user_list = []
+        for project in id:
+                    user_dict = {
+                        'name': project[0],
+                        'Email_id' : project[1],
+                        'contact' : project[2]
+                    }
+                    user_list.append(user_dict)
+        logging.debug(dt_string + " returning a list of user details for this user_id...")
+        return jsonify(user_list),200
+        
+
+    except KeyError as e:
+        # Handle missing key in the request data
+        return jsonify({"error":  + str(e)}), 400
+
+    except mysql.connector.Error as err:
+        # Handle MySQL database-related errors
+        print("Database error: " + str(err))
+        return jsonify({"error": "Database error: " + str(err)}), 500
+
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print("An error occurred: " + str(e))
+        return jsonify({"error": "An error occurred: " + str(e)}), 500
     
 
 

@@ -287,6 +287,10 @@ def update_user():
 def delete_user():
     return delete_users()
 
+@app.route('/useridwise_user', methods=['POST'])
+def useridwise_user():
+    return user_useridwise()
+
     
 if __name__ == "__main__":
     app.run(debug=True,port=5000)
