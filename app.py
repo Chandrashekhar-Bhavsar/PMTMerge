@@ -4,7 +4,6 @@ import jwt
 from functools import wraps
 import mysql.connector
 from flask_cors import CORS,cross_origin
-import bcrypt
 from flask_bcrypt import bcrypt
 from connection import *
 from queries import *
@@ -15,10 +14,7 @@ from Comments_Module import *
 from issue import *
 from pmt import *
 from UserManagement_module import *
-import datetime
-from datetime import datetime
 import logging
-
 import datetime
 from datetime import datetime
 import logging
@@ -115,9 +111,7 @@ def DetailedIssue():
 ############################################################
 #                       authentication module              #
 ############################################################
-from flask_bcrypt import Bcrypt
-import bcrypt
-bcrypt = Bcrypt(app)
+
 
 
 @app.route('/login', methods=['POST'])
@@ -289,7 +283,7 @@ def delete_user():
 
 @app.route('/useridwise_user', methods=['POST'])
 def useridwise_user():
-    return user_useridwise()
+    return user_useridwise()
 
     
 if __name__ == "__main__":
