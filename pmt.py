@@ -152,7 +152,7 @@ def get_users_from_project():
         data = request.get_json()
         project_id = data['project_id']
         cursor = mydb.cursor()
-        query = "SELECT Users.* FROM Users JOIN project_member ON Users.user_ID = project_member.user_ID WHERE project_member.Project_ID = %s"
+        query = "SELECT Users.user_ID, Users.role, Users.Name, Users.Email_ID FROM Users JOIN project_member ON Users.user_ID = project_member.user_ID WHERE project_member.Project_ID = %s;"
         values = (project_id,)
         cursor.execute(query, values)
         users = cursor.fetchall()
@@ -166,8 +166,7 @@ def get_users_from_project():
                 'user_id': user[0],
                 'role': user[1],
                 'name': user[2],
-                'email': user[3],
-                'contact': user[4]
+                'email_id': user[3]
             }
             user_list.append(user_info)
 
@@ -210,6 +209,61 @@ def get_cardprojectdetails():
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
+
+def update_users():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside update usder API.....")
+        data = request.get_json()
+        
+        logging.debug(dt_string + " Taking Some inputs.....")
+        
+        if "name" not in data:
+            return jsonify({"error": "Missing 'name' in request data"}), 400
+        if "email_id" not in data:
+            return jsonify({"error": "Missing 'email_id' in request data"}), 400
+        if "contact" not in data:
+            return jsonify({"error": "Missing 'contact' in request data"}), 400
+        if "user_id" not in data:
+            return jsonify({"error":"Missing 'user_id' in the data."}),400
+        name = data['name']
+        
+        email_id = data['email_id']
+        
+        contact = data['contact']
+
+        user_id = data['user_id']
+        
+        if(type(user_id) is not int):
+            return jsonify({"error":"user_id must be integer"}),400
+        if  not is_valid_name(name):
+            return jsonify({"error":"Invalid Name....Name can't start from Number,Can be a alphanumeric,special characters are not allowed"}),400
+        if  not is_valid_phone_number(contact):
+            return jsonify({"error":"Invalid Contact Number."}),400
+        if  not is_valid_email(email_id):
+            return jsonify({"error":"Invalid Email"}),400
+
+        return user_update(user_id,name,email_id,contact)  #add role 
+
+    except KeyError as e:
+        # Handle missing key in the request data
+        #print(dt_string + " Missing key in request data: " + str(e))
+        
+        return jsonify({"error": str(e)}), 400
+
+    except mysql.connector.Error as err:
+        # Handle MySQL database-related errors
+        print(" Database error: " + str(err))
+        
+        return jsonify({"error": "Database error: " + str(err)}), 500
+
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print(" An error occurred: " + str(e))
+        
+        return jsonify({"error": "An error occurred: " + str(e)}), 500
+
 
 
 ################################################################################################################    

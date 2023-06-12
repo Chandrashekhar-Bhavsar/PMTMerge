@@ -278,6 +278,15 @@ def delete_defect():
 @app.route('/completeProjectdetails', methods=['POST'])
 def completeProjectdetails():
     return ProjectDetails()
+
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    return update_users()
+
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    return delete_users()
+
     
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import mysql.connector
 from flask_cors import CORS,cross_origin
 from connection import *
-from queries import user_add,user_assign,user_show
+from queries import *
 import smtplib
 import random
 import logging
@@ -234,6 +234,45 @@ def showuser():
         
         return jsonify({"error": "An error occurred: " + str(e)}), 500
     
+
+
+def delete_users():
+    try:    
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside show delete_user api...")
+        data = request.get_json()
+        
+        logging.debug(dt_string + " Accepting some values....")
+        if "user_id" not in data:
+            return jsonify({"error": "Missing 'user_id' in request data"}), 400
+        user_id = data["user_id"]
+        
+        if(type(user_id) is not int):
+            return jsonify({"error":"user_id must be integer"}),400
+
+        return user_delete(user_id)
+    
+    except KeyError as e:
+        # Handle missing key in the request data
+        
+        #print("Missing key in request data: " + str(e))
+        
+        return jsonify({"error": str(e)}), 400
+
+    except mysql.connector.Error as err:
+            # Handle MySQL database-related errors
+            
+            print("Database error: " + str(err))
+            
+            return jsonify({"error": "Database error: " + str(err)}), 500
+
+    except Exception as e:
+            # Handle any other unexpected exceptions
+            
+            print("An error occurred: " + str(e))
+            
+            return jsonify({"error": "An error occurred: " + str(e)}), 500
 
 
     

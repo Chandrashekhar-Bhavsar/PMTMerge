@@ -1,11 +1,33 @@
 from connection import *
 # MySQL configuration
+import hashlib
+import smtplib
+import random
+import logging
+from datetime import datetime
+import re
 
 import logging
 from datetime import datetime
 mydb=connect_db()
 cursor=mydb.cursor()
+def is_valid_name(name):
+    pattern = r'^[a-zA-Z][a-zA-Z0-9]*$'
+    return re.match(pattern, name) is not None and not name.isdigit()
 
+#to check valid email
+def is_valid_email(email):
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(pattern, email) is not None
+
+#To check valid phone_no.
+def is_valid_phone_number(phone_number):
+    # Remove any non-digit characters from the phone number
+    cleaned_number = re.sub(r'\D', '', phone_number)
+
+    # Check if the cleaned number matches the desired format
+    pattern = r'^\d{10}$'  # Assumes a 10-digit phone number
+    return re.match(pattern, cleaned_number) is not None
 
 
 
@@ -639,3 +661,112 @@ def deletedefect(defect_id):
 
         logging.debug("Defect deleted: defect_id={}".format(defect_id))
         return jsonify({"message": "Defect Deleted successfully"}), 200
+
+
+def user_update(user_id , name, email_id, contact):#add role after test3
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside user_update function.....")
+
+        query = "Select email_id from Users where user_id = %s;"
+        values = (user_id,)
+        cursor.execute(query,values)
+        id = cursor.fetchone()
+        print(id)
+        if(id[0]==email_id):
+               query="update Users set name = %s, contact = %s where user_id = %s;"
+               values = (name,contact,user_id)
+               cursor.execute(query,values)
+               mydb.commit()
+               logging.debug(dt_string + "User details updated successfully.")
+               return jsonify({"msg":" User Details updated successfully"}),200
+        logging.debug(dt_string,"checking if the email is already associated with exixting user.")
+        query = "select user_id from Users where email_id = %s;"
+        values = (email_id,)
+        cursor.execute(query,values)
+        id=cursor.fetchall()
+        if id :
+               return jsonify({"error":"email already exsists."}),400
+        def send_otp_email(receiver_email, otp):
+            
+            logging.debug(dt_string + " Entered send_otp_email function....")
+            
+            sender_email = "pratik@infobellit.com"  # Replace with your email address
+            
+            password = "mzygirleuqcwzwtk"  # Replace with your email password
+
+            message = f"Subject: login credentials for Project Management Tool\n\n Your Username is your email.\nYour password is: {otp}"
+            
+            logging.debug(dt_string + " Sending email....")
+            
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.starttls()
+            
+                server.login(sender_email, password)
+                
+                server.sendmail(sender_email, receiver_email, message)
+            
+
+        def generate_otp(length=6):
+            
+            logging.debug(dt_string + " Entered into generate_otp function....")
+            
+            digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+            
+            otp = ""
+            
+            for _ in range(length):
+            
+                otp += random.choice(digits)
+            
+            logging.debug(dt_string + " OTP generated sucessfully....")
+            
+            return otp
+
+        # Example usage
+        email = email_id  # Replace with the recipient's email address
+        
+        logging.debug(dt_string + " calling generate_otp function...")
+        
+        otp = generate_otp()
+        
+        logging.debug(dt_string + " calling send_otp_email function....")
+        
+        send_otp_email(email, otp)
+        
+        print("OTP sent successfully!")
+
+
+        # Hash the password
+        logging.debug(dt_string + " Encrypting the generated password....")
+       
+        hashed_password =hashlib.sha256(str(otp).encode('utf-8')).hexdigest()
+
+        logging.debug(dt_string + " updating the users details into the database...")
+        query = "update  Users set Name = %s, Email_ID =%s,Contact = %s , password = %s where user_id = %s ;" #add role after test
+        values = ( name, email_id, contact,hashed_password,user_id)#add role after test
+        cursor.execute(query, values)
+        mydb.commit()
+        logging.debug(dt_string + " Details successfully updated into the database....")
+
+        return jsonify({"message": "User details updated successfully."}), 200
+
+
+def user_delete(user_id):
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside user_delete function.....")
+        query = "select 1 from Users where user_id=%s;"
+        values = (user_id,)
+        cursor.execute(query,values)
+        id = cursor.fetchone()
+        if not id:
+               return jsonify({"error":"User doesn't exists."}),400
+        query1 = "delete from project_member where user_id=%s;"
+        values1 = (user_id,)
+        cursor.execute(query1,values1)
+        query2 = "delete from Users where user_id = %s;"
+        values2 = (user_id,)
+        cursor.execute(query2,values2)
+        mydb.commit()
+        return jsonify({"msg":"User Successfully deleted."}),200
