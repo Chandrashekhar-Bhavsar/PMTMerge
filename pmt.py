@@ -279,7 +279,6 @@ def update_projects():
         logging.debug(dt_string,"Inside the update project api ")
         data = request.get_json()
         logging.debug(dt_string,"payload received from frontend is ", data)
-        comment=data["comments"]
         project_id = data['project_id']
         project_name = data['project_name']
         project_description = data['project_description']
