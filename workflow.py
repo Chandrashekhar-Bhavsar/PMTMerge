@@ -48,8 +48,6 @@ def getworkflow():
         logging.debug(dt_string+" User has made a call for GetWorkFlow api")
         logging.debug(dt_string+" Inside the GetWorkFlow api ")
         logging.debug(dt_string+" payload received from frontend is ")
-        data = request.get_json()
-        wfn=data["wfn"]
         query = "Select * from workflow"
         #values=(wfn,)
         cursor.execute(query,)
