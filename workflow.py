@@ -65,7 +65,7 @@ def getworkflow():
     except Exception as e:
         return jsonify({"error": "bad values"}), 400
     
-def GetWorkfloByName():
+def GetWorkFloByName():
     try:
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
