@@ -8,11 +8,13 @@ WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip
 
 # Copy the application code to the container and change ownership
-COPY --chown=1001:0 app.py .
 COPY --chown=1001:0 . .
 
 # Install the project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install pymysqlpool
+RUN pip install --no-cache-dir pymysqlpool
 
 # Set ownership and switch to a non-root user
 RUN chown -R 1001:0 /app
@@ -24,7 +26,6 @@ EXPOSE 5000
 # Set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=development
 
 # Start the Flask application
 CMD ["flask", "run"]
