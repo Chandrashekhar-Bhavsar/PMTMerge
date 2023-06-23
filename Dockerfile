@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir --upgrade pip
 COPY --chown=1001:0 . .
 
 # Install the project dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir dbutils pymysql pymysqlpool
 
 # Set ownership and switch to a non-root user
 RUN chown -R 1001:0 /app
