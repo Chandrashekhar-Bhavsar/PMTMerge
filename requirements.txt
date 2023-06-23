@@ -5,4 +5,3 @@ Flask-Bcrypt==0.7.1
 Werkzeug==2.0.2
 PyJWT==2.1.0
 dbutils
-

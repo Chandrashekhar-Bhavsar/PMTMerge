@@ -14,7 +14,7 @@ COPY --chown=1001:0 . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install pymysqlpool
-RUN pip install --no-cache-dir pymysqlpool
+RUN pip install --no-cache-dir mysql-connector-python==8.0.26
 
 # Set ownership and switch to a non-root user
 RUN chown -R 1001:0 /app
