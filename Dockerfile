@@ -8,6 +8,7 @@ WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip
 
 # Copy the application code to the container and change ownership
+COPY --chown=1001:0 app.py .
 COPY --chown=1001:0 . .
 
 # Install the project dependencies
@@ -23,6 +24,7 @@ EXPOSE 5000
 # Set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_ENV=development
 
 # Start the Flask application
 CMD ["flask", "run"]
