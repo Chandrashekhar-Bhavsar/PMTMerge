@@ -610,7 +610,7 @@ def deleteissues(issue_id):
 
 def createtask(issue_id, title, task_sd, task_ed, estimated_time, priority):
         logging.debug("Inside createtask function")
-        query = "INSERT INTO task (issue_id,title,task_sd, task_ed, estimated_time, priority) VALUES (%s, %s, %s, %s, %s,%s)"
+        query = "INSERT INTO Task (issue_id,title,task_sd, task_ed, estimated_time, priority) VALUES (%s, %s, %s, %s, %s,%s)"
         values = (issue_id, title, task_sd, task_ed, estimated_time, priority)
         cursor.execute(query, values)
         mydb.commit()
@@ -623,7 +623,7 @@ def createtask(issue_id, title, task_sd, task_ed, estimated_time, priority):
 
 def updatetask( title, task_sd, task_ed, estimated_time, priority, file_attachment, task_id, issue_id):
         logging.debug("Inside update task function")
-        query = "UPDATE task SET title = %s,task_sd=%s, task_ed=%s, estimated_time=%s, priority=%s, file_attachment=%s WHERE task_id=%s and issue_id=%s"
+        query = "UPDATE Task SET title = %s,task_sd=%s, task_ed=%s, estimated_time=%s, priority=%s, file_attachment=%s WHERE task_id=%s and issue_id=%s"
         values = ( title, task_sd, task_ed, estimated_time, priority, file_attachment, task_id, issue_id)
         cursor.execute(query, values)
         mydb.commit()
