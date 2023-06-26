@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 import jwt
-import cryptography
 from functools import wraps
 import mysql.connector
 from flask_cors import CORS,cross_origin
