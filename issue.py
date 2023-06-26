@@ -278,6 +278,7 @@ def createDefect():
 def updateDefect():
     try:
         data = request.json
+        print("Payload is : ", data)
         defect_id = data['defect_id']
         issue_id = data['issue_id']
         title = data['title']
@@ -288,8 +289,8 @@ def updateDefect():
         severity = data['severity']
         os = data['os']
         summary = data['summary']
-        defect_sd = data['defect_sd']
-        defect_ed = data['defect_ed']
+        defect_sd = str(data['defect_sd'])
+        defect_ed = str(data['defect_ed'])
         priority = data['priority']
         estimated_time = data['estimated_time']
         file_attachment = data['file_attachment']
