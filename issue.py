@@ -295,7 +295,7 @@ def updateDefect():
         file_attachment = data['file_attachment']
 
         cursor = mydb.cursor()
-        query = "SELECT COUNT(*) FROM defect WHERE defect_id=%s"
+        query = "SELECT COUNT(*) FROM Defect WHERE defect_id=%s"
         cursor.execute(query, (defect_id,))
         count = cursor.fetchone()[0]
 
