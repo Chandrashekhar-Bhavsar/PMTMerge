@@ -382,8 +382,8 @@ def update_projects():
         status = data['status']
         project_lead = data['project_lead']
         client_name = data['client_name']
-        risk = "xyz" #data['risk']
-        mitigation = "xyz" #data['mitigation']
+        risk = data['risk']
+        mitigation = data['mitigation']
         logging.debug(dt_string,"Calling update project query function ")
         
         if not isinstance(Project_ID, int):
