@@ -382,8 +382,7 @@ def update_projects():
         status = data['status']
         project_lead = data['project_lead']
         client_name = data['client_name']
-        risk = data['risk']
-        mitigation = data['mitigation']
+
         logging.debug(dt_string,"Calling update project query function ")
         
         if not isinstance(Project_ID, int):
@@ -395,7 +394,7 @@ def update_projects():
         
         
         return update_project_details(project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
-                                      planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation, Project_ID)
+                                      planned_hours, actual_hours, status, project_lead, client_name, Project_ID)
 
     except KeyError:
         # Handle missing key error
