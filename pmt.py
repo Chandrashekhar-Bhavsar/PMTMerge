@@ -269,7 +269,8 @@ def get_cardprojectdetails():
         user_ID = data['user_ID']
         print("inside the function")
         cursor = mydb.cursor()
-        query = "SELECT * FROM Project_Details p join project_member m on m.Project_ID=p.Project_ID  where p.ownby_id= m.user_ID and m.user_ID=%s  ;"
+        #query = "SELECT * FROM Project_Details p join project_member m on m.Project_ID=p.Project_ID  where p.ownby_id= m.user_ID and m.user_ID=%s  ;"
+        query = "SELECT p.Project_ID,p.Project_Name,p.Project_Description,p.Planned_SD,p.Planned_ED,p.Actual_SD,p.Actual_ED,p.Planned_Hours,p.Actual_Hours,p.Status,p.Project_Lead,p.Client_Name,p.Risk,p.Mitigation,p.ownby_id,p.ownby_name,s.status FROM Project_Details p JOIN project_member m ON m.Project_ID = p.Project_ID JOIN project_status s ON s.id = p.Project_ID WHERE p.ownby_id = m.user_ID AND m.user_ID = %s;"
         value=(user_ID,)
         cursor.execute(query,value)
         projects = cursor.fetchall()
@@ -285,22 +286,21 @@ def get_cardprojectdetails():
                     'Actual_ed' : project[6],
                     'planned_hours':project[7],
                     "actual_hours":project[8],
-                    "Status":project[9],
+                    "state":project[9],
                     "project_lead":project[10],
                     "client_name":project[11],
                     "risk":project[12],
                     "mitigation":project[13],
                     "ownby_id":project[14],
-                    "ownby_name":project[15]
+                    "ownby_name":project[15],
+                    "status" : project[16]
                 }
             project_list.append(project_dict)
-        
-        
         return jsonify(project_list),200
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
-
+    
 def update_users():
     try:
         now = datetime.now()

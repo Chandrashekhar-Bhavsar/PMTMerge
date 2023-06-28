@@ -519,7 +519,6 @@ def update_project_details(project_name, project_description, planned_sd, planne
         return jsonify({"message": "Project updated successfully"}), 200
 
 
-
 ############################ CREATE ISSUE  #################################
 
 
@@ -529,8 +528,7 @@ def create_issue(Issue_name, Description):
         cursor.execute(query, values)
         mydb.commit()
         
-        
-        
+         
         logging.debug("Issue created: issue_name={}, description={}".format(Issue_name, Description))
         return jsonify({"message": "Issue created successfully"}), 200
 
@@ -540,7 +538,6 @@ def create_issue(Issue_name, Description):
 def updateissues(status,issue_id):
    
         logging.debug("Inside updateissues function")
-        
         query = "UPDATE Issue_Details SET status = %s WHERE issue_id=%s"
         values = (status, issue_id)
         cursor.execute(query, values)
@@ -556,7 +553,6 @@ def updateissues(status,issue_id):
 def updateissuesdesc(descripition,issue_id):
    
         logging.debug("Inside updateissues function")
-        
         query = "UPDATE Issue_Details SET description = %s WHERE issue_id=%s"
         values = (descripition, issue_id)
         cursor.execute(query, values)
@@ -572,8 +568,6 @@ def updateissuesdesc(descripition,issue_id):
 
 def deleteissues(issue_id):
         logging.debug("Inside deleteissues function")
-        
-
         check_query = "SELECT * FROM Issue_Details WHERE issue_id = %s"
         cursor.execute(check_query, (issue_id,))
         result = cursor.fetchone()
@@ -598,10 +592,7 @@ def deleteissues(issue_id):
         query = "DELETE FROM Issue_Details WHERE issue_id = %s"
         cursor.execute(query, values)
         mydb.commit()
-        
-        
 
-        
         logging.debug("Issue deleted: issue_id={}".format(issue_id))
         return jsonify({"message": "Issue Deleted successfully"}), 200
 
@@ -614,8 +605,6 @@ def createtask(issue_id, title, task_sd, task_ed, estimated_time, priority):
         cursor.execute(query, values)
         mydb.commit()
         
-        
-
         return jsonify({"message": "Task created successfully"}), 200
 
 ############################ UPDATE TASK #################################
@@ -626,7 +615,6 @@ def updatetask( title, task_sd, task_ed, estimated_time, priority, file_attachme
         values = ( title, task_sd, task_ed, estimated_time, priority, file_attachment, task_id, issue_id)
         cursor.execute(query, values)
         mydb.commit()
-        
         
         return jsonify({"message": "Task updated successfully"}), 200
 
@@ -639,8 +627,6 @@ def deletetask(task_id):
         cursor.execute(query, values)
         mydb.commit()
         
-        
-
         logging.debug("Task deleted: task_id={}".format(task_id))
         return jsonify({"message": "Task Deleted successfully"}), 200
 
@@ -652,8 +638,6 @@ def createdefects(issue_id, title, product, component, component_description, ve
         cursor.execute(query, values)
         mydb.commit()
         
-        
-
         return jsonify({'message': 'Defect created successfully'}), 200
 
 ############################ UPDATE DEFECT #################################
@@ -663,8 +647,6 @@ def updatedefects(issue_id, title, product, component, component_description, ve
         cursor.execute(query, values)
         mydb.commit()
         
-        
-
         return jsonify({'message': 'Defect updated successfully'}), 200
 
 ############################ DELETE DEFECT #################################
@@ -676,8 +658,6 @@ def deletedefect(defect_id):
         cursor.execute(query, values)
         mydb.commit()
         
-        
-
         logging.debug("Defect deleted: defect_id={}".format(defect_id))
         return jsonify({"message": "Defect Deleted successfully"}), 200
 
