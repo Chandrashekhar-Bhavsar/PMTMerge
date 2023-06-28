@@ -507,17 +507,16 @@ def create_project_query(user_ID,user_name,project_name, project_description,
 
 
 def update_project_details(project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
-                  planned_hours, actual_hours, status, project_lead, client_name, Project_ID):
+                  planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation, Project_ID):
         cursor = mydb.cursor()
-        query = "UPDATE Project_Details SET project_name = %s, project_description = %s, planned_sd = %s, planned_ed = %s,actual_sd = %s,actual_ed = %s,planned_hours = %s,actual_hours =%s,status = %s,project_lead = %s,client_name = %s where Project_ID = %s"
+        query = "UPDATE Project_Details SET project_name = %s, project_description = %s, planned_sd = %s, planned_ed = %s,actual_sd = %s,actual_ed = %s,planned_hours = %s,actual_hours =%s,status = %s,project_lead = %s,client_name = %s,risk = %s,mitigation = %s where Project_ID = %s"
         values = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
-                  planned_hours, actual_hours, status, project_lead, client_name, Project_ID)
+                  planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation, Project_ID)
         cursor.execute(query, values)
         mydb.commit()
         
         
         return jsonify({"message": "Project updated successfully"}), 200
-
 
 
 

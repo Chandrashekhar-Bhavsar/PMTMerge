@@ -365,5 +365,13 @@ def issuewise_user():
 def issuestates_protectwise():
     return issuestate_projectwise()
 
+@app.route('/add_attachment', methods=['POST'])
+def add_attachment():
+    return add_attachments()
+
+@app.route('/display_attachment', methods=['POST'])
+def display_attachment():
+    return display_attachments()
+
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

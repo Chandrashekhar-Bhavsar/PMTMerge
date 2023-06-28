@@ -1124,3 +1124,83 @@ def issuestate_projectwise():
         print("An error occurred: " + str(e))
         return jsonify({"error": "An error occurred: " + str(e)}), 500
     
+def add_attachments():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside add_attachments api....")
+        data = request.get_json()
+        if "issue_id" not in data:
+            return jsonify({"error": "Missing 'issue_id' in request data"}), 400
+        if "link" not in data:
+            return jsonify({"error": "Missing 'link' in request data"}), 400
+        if "Name" not in data:
+            return jsonify({"error": "Missing 'Name' in request data"}), 400
+        logging.debug(dt_string + " Accepting values to add attachment ")
+        issue_id=data["issue_id"]
+        link = data["link"]
+        Name = data["Name"]
+        query = "Insert into attachment(issue_id,Name,link) values(%s,%s,%s);"
+        values = (issue_id,Name,link)
+        cursor.execute(query,values)
+        return jsonify({"msg":"attachment added succesfully"}), 200
+        
+    except KeyError as e:
+        # Handle missing key in the request data
+        return jsonify({"error":  + str(e)}), 400
+
+    except mysql.connector.Error as err:
+        # Handle MySQL database-related errors
+        print("Database error: " + str(err))
+        return jsonify({"error": "Database error: " + str(err)}), 500
+
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print("An error occurred: " + str(e))
+        return jsonify({"error": "An error occurred: " + str(e)}), 500
+    
+
+def display_attachments():
+    try:
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside display_attachments api....")
+        data = request.get_json()
+        if "issue_id" not in data:
+            return jsonify({"error": "Missing 'issue_id' in request data"}), 400
+        logging.debug(dt_string + " Accepting values to display attachment ")
+        issue_id=data["issue_id"]
+        query = "select * from attachment where issue_id = %s;"
+        values = (issue_id,)
+        cursor.execute(query,values)
+        id = cursor.fetchall()
+        if not id :
+            return ({"msg" : "no attachments associated"}),200
+        comments_list = []
+        for project in id:
+                comments_dict = {
+                    "sno" : project[0],
+                    "issue_id" : project[1],
+                    "Name" : project[2],
+                    "link" : project[3]
+                }
+                comments_list.append(comments_dict)
+        
+        
+        logging.debug(dt_string + " Returning the list of all the attachments related to this issue...")
+        return jsonify(comments_list),200
+        
+        
+    except KeyError as e:
+        # Handle missing key in the request data
+        return jsonify({"error":  + str(e)}), 400
+
+    except mysql.connector.Error as err:
+        # Handle MySQL database-related errors
+        print("Database error: " + str(err))
+        return jsonify({"error": "Database error: " + str(err)}), 500
+
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print("An error occurred: " + str(e))
+        return jsonify({"error": "An error occurred: " + str(e)}), 500
