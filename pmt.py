@@ -18,9 +18,6 @@ import hashlib
 file = open("myfile.txt","w")
 
 
-
-
-
 ##############################################################################################################
                                         # login
 ###############################################################################################################
@@ -218,6 +215,7 @@ def Assign_User():
             values2 = ( u_id[0],Project_ID)#add role after test
             cursor.execute(query2, values2)
             mydb.commit()
+            
             
             
             logging.debug(dt_string + " Details successfully updated into the database....")
@@ -446,7 +444,6 @@ def ProjectDetails():
 
 
 ###################################### GET ALL PROJECT DETAILS ###################################
-
 
 
 def create_task():

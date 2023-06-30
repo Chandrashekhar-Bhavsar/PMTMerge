@@ -67,12 +67,11 @@ def adduser():
             return jsonify({"error": "Missing 'Email_ID' in request data"}), 400
         if "Contact" not in data:
             return jsonify({"error": "Missing 'Contact' in request data"}), 400
-        Name = data['Name']
+        Name = str(data['Name'])
         Email_ID = data['Email_ID']
         Contact = data['Contact']
         role = "User"
-        if  not is_valid_name(Name):
-            return jsonify({"error":"Invalid Name....Name can't start from Number,Can be a alphanumeric,special characters are not allowed"}),400
+        
         if  not is_valid_email(Email_ID):
             return jsonify({"error":"Invalid Email"}),400
         if  not is_valid_phone_number(Contact):
@@ -89,7 +88,7 @@ def adduser():
             password = "pfpnaxhguopcukvc"  # Replace with your email password
             message = '''Subject: login credentials for Project Management Tool\n
                             Your Username is your email.\n
-                            Your password is: '''+ otp
+                            Your password is: ''' + otp
             logging.debug(dt_string + " Sending email....")
             with smtplib.SMTP("smtp.gmail.com", 587) as server:
                 server.starttls()
