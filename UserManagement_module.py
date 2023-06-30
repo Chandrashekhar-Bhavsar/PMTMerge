@@ -127,19 +127,19 @@ def send_otp_email(receiver_email, otp, name):
     message.attach(MIMEText(html_content, "html"))
 
     # Open the file you want to attach
-    filename = "C:\\Users\\simra\\OneDrive\\Desktop\\email\\trial.html"  # Replace with the actual file path
-    file_basename = os.path.basename(filename)  # Extract the filename
-    with open(filename, "rb") as attachment:
-        # Add the file as an attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+    # filename = "C:\\Users\\simra\\OneDrive\\Desktop\\email\\trial.html"  # Replace with the actual file path
+    # file_basename = os.path.basename(filename)  # Extract the filename
+    # with open(filename, "rb") as attachment:
+    #     # Add the file as an attachment
+    #     part = MIMEBase("application", "octet-stream")
+    #     part.set_payload(attachment.read())
 
-    # Encode the file in ASCII characters to send via email
-    encoders.encode_base64(part)
+    # # Encode the file in ASCII characters to send via email
+    # encoders.encode_base64(part)
 
-    # Add the attachment to the message
-    part.add_header("Content-Disposition", f"attachment; filename={file_basename}")
-    message.attach(part)
+    # # Add the attachment to the message
+    # part.add_header("Content-Disposition", f"attachment; filename={file_basename}")
+    # message.attach(part)
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
