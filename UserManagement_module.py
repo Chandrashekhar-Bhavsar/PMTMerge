@@ -1,3 +1,8 @@
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import os
 from flask import Flask, jsonify, request
 import mysql.connector
 from flask_cors import CORS,cross_origin
@@ -53,6 +58,105 @@ def is_valid_phone_number(phone_number):
     pattern = r'^\d{10}$'  # Assumes a 10-digit phone number
     return re.match(pattern, cleaned_number) is not None
 
+now = datetime.now()
+dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+
+def send_otp_email(receiver_email, otp, name):
+    sender_email = "techbrutal11@gmail.com"  # Replace with your email address
+    password = "pfpnaxhguopcukvc"  # Replace with your email password
+    
+    # Create a multipart message object
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = "Login credentials for Project Management Tool"
+
+    # Create the HTML content with embedded image and dynamic values
+    html_content = f"""
+ <html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }}
+
+        h1 {{
+            color: #333;
+            text-transform: capitalize;
+        }}
+
+        p {{
+            margin-bottom: 10px;
+        }}
+
+        .login-link {{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }}
+        
+        .login-link:hover {{
+            background-color: #0056b3;
+             color: #fff !important;
+        }}
+    </style>
+</head>
+<body>
+    <h1>Welcome To Project Management Tool, {name}!</h1>
+    
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlzsv2D-7l5-OIWNKeoGUKeVf24vRHBeRVgPIon3eL&s" alt="trial" height="100px" width="150px">
+    <p>Thank you for joining our Project Management Tool! We are excited to have you on board.</p>
+    <p>This tool will help you efficiently manage your projects, tasks, and collaborations, ensuring better productivity and successful project outcomes.</p>
+    <p>If you have any questions or need assistance, please don't hesitate to reach out to our support team.</p>
+    <p>Happy project management!</p>
+    <h3>Login ID: {receiver_email}</h3>
+    <h3>Password: {otp} </h3> 
+    
+    <p>Please click the button below to login:</p>
+    <a class="login-link" href="https://frontend-project-management-yjb-yjb28-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com/">Login</a>
+</body>
+</html>
+    """
+
+    # Attach the HTML content as a MIMEText object
+    message.attach(MIMEText(html_content, "html"))
+
+    # Open the file you want to attach
+    filename = "C:\\Users\\simra\\OneDrive\\Desktop\\email\\trial.html"  # Replace with the actual file path
+    file_basename = os.path.basename(filename)  # Extract the filename
+    with open(filename, "rb") as attachment:
+        # Add the file as an attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode the file in ASCII characters to send via email
+    encoders.encode_base64(part)
+
+    # Add the attachment to the message
+    part.add_header("Content-Disposition", f"attachment; filename={file_basename}")
+    message.attach(part)
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+    
+    return jsonify({"msg": "OTP sent successfully"})
+                
+def generate_otp(length=6):
+            logging.debug(dt_string + " Entered into generate_otp function....")
+            digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+            otp = ""
+            for _ in range(length):
+                otp += random.choice(digits)
+            logging.debug(dt_string + " OTP generated sucessfully....")
+            return otp
+
 #to add new user
 def adduser():
     try:
@@ -71,7 +175,6 @@ def adduser():
         Email_ID = data['Email_ID']
         Contact = data['Contact']
         role = "User"
-        
         if  not is_valid_email(Email_ID):
             return jsonify({"error":"Invalid Email"}),400
         if  not is_valid_phone_number(Contact):
@@ -82,32 +185,13 @@ def adduser():
         id=cursor.fetchone()
         if id:
                return jsonify({"error":"email already exists."}),400
-        def send_otp_email(receiver_email, otp):
-            logging.debug(dt_string + " Entered send_otp_email function....")
-            sender_email = "techbrutal11@gmail.com"  # Replace with your email address
-            password = "pfpnaxhguopcukvc"  # Replace with your email password
-            message = '''Subject: login credentials for Project Management Tool\n
-                            Your Username is your email.\n
-                            Your password is: ''' + otp
-            logging.debug(dt_string + " Sending email....")
-            with smtplib.SMTP("smtp.gmail.com", 587) as server:
-                server.starttls()
-                server.login(sender_email, password)
-                server.sendmail(sender_email, receiver_email, message)
-        def generate_otp(length=6):
-            logging.debug(dt_string + " Entered into generate_otp function....")
-            digits = "0123456789abcdefghijklmnopqrstuvwxyz"
-            otp = ""
-            for _ in range(length):
-                otp += random.choice(digits)
-            logging.debug(dt_string + " OTP generated sucessfully....")
-            return otp
+
         # Example usage
         email = Email_ID  # Replace with the recipient's email address
         logging.debug(dt_string + " calling generate_otp function...")
         otp = generate_otp()
         logging.debug(dt_string + " calling send_otp_email function....")
-        send_otp_email(email, otp)
+        send_otp_email(email,otp,Name)
         print("OTP sent successfully!")
         # Hash the password
         logging.debug(dt_string + " Encrypting the generated password....")

@@ -16,6 +16,13 @@ import logging
 import datetime
 from datetime import datetime
 from status_module import *
+from flask_mail import Mail, Message
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import os
+import smtplib
 
 logging.basicConfig(level=logging.DEBUG)
 
