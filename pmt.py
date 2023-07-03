@@ -228,10 +228,10 @@ def forgetpassword():
     
 def resetpassword():
     try:
-        now = datetime.datetime.now()
-        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string + " User has made a call for password reset API")
-        logging.debug(dt_string + " Inside the password reset API")
+        # now = datetime.datetime.now()
+        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        # logging.debug(dt_string + " User has made a call for password reset API")
+        # logging.debug(dt_string + " Inside the password reset API")
         data = request.get_json()
         email_id = data['Email_ID']
         otp = data['otp']
@@ -240,11 +240,11 @@ def resetpassword():
         # Retrieve the stored OTP associated with the user
         stored_otp = get_stored_otp(email_id)           
         if stored_otp == otp:
-            logging.debug(dt_string + " OTP is valid")
+            # logging.debug(dt_string + " OTP is valid")
             return jsonify({'msg': "OTP verified. Proceed to set new password."}), 200
 
         else:
-            logging.debug(dt_string + " OTP is invalid")
+            # logging.debug(dt_string + " OTP is invalid")
             return jsonify({'error': "Invalid OTP"}), 400
 
     except Exception as e:
@@ -254,10 +254,10 @@ def resetpassword():
 def setpassword():
     try:
 
-        now = datetime.datetime.now()
-        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string + " User has made a call for setting new password API")
-        logging.debug(dt_string + " Inside the set password API")
+        # now = datetime.datetime.now()
+        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        # logging.debug(dt_string + " User has made a call for setting new password API")
+        # logging.debug(dt_string + " Inside the set password API")
         data = request.get_json()
         new_password = data['new_password']
         # Retrieve the email from the global variable
@@ -277,8 +277,8 @@ def setpassword():
         stored_otp = None
         reset_email = None
         
-        logging.debug(dt_string + " Password reset successful")
-        logging.debug(dt_string + " Set password API execution completed without errors")
+        # logging.debug(dt_string + " Password reset successful")
+        # logging.debug(dt_string + " Set password API execution completed without errors")
         
         return jsonify({'msg': "Password reset successful"}), 200
 
