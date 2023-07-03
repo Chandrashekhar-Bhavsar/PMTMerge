@@ -7,6 +7,7 @@ from flask_cors import CORS,cross_origin
 from connection import *
 from queries import *
 import datetime
+from datetime import datetime
 import logging
 import smtplib
 import random
@@ -150,27 +151,27 @@ def ShowEmailsTeams():
 
 def pm_loginn():
     try:
-        # now = datetime.now()
-        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        # logging.debug(dt_string + " User has made a call for login api")
-        # logging.debug(dt_string + " Inside the Login api ")
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " User has made a call for login api")
+        logging.debug(dt_string + " Inside the Login api ")
         data = request.get_json()
         Email_ID = data['Email_ID']
         Password = data['password']
         cursor = mydb.cursor()
-        # logging.debug(dt_string + " Checking for valid email")
+        logging.debug(dt_string + " Checking for valid email")
         query1 = "SELECT * FROM Users WHERE Email_ID=%s"
         values1 = (Email_ID,)
         cursor.execute(query1, values1)
         users1 = cursor.fetchone()
-        # logging.debug(dt_string + " Email Checking Query executed successfully")
-        # logging.debug(dt_string + " Query result is ", users1)
+        logging.debug(dt_string + " Email Checking Query executed successfully")
+        logging.debug(dt_string + " Query result is ", users1)
         if not users1:
-            # logging.debug(dt_string + " Email id is not valid")
+            logging.debug(dt_string + " Email id is not valid")
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
-            #logging.debug(dt_string + " Checking for valid password")
+            logging.debug(dt_string + " Checking for valid password")
             print("original password is",Password)
             hashed_password =hashlib.sha256(Password.encode('utf-8')).hexdigest()
             print("password is :", hashed_password)
@@ -178,10 +179,10 @@ def pm_loginn():
             values2 = (hashed_password,)
             cursor.execute(query2, values2)
             users2 = cursor.fetchone()
-            # logging.debug(dt_string + " Password Checking Query executed successfully")
-            # logging.debug(dt_string + " Query result is ", users2)
+            logging.debug(dt_string + " Password Checking Query executed successfully")
+            logging.debug(dt_string + " Query result is ", users2)
             if not users2:
-                # logging.debug(dt_string + " Password is not valid")
+                logging.debug(dt_string + " Password is not valid")
                 return jsonify({'error': 'Password is invalid'}), 400
             else:
                 flag2 = True
@@ -190,8 +191,8 @@ def pm_loginn():
             values3 = (hashed_password,Email_ID)
             cursor.execute(query3, values3)
             users3 = cursor.fetchall()
-            # logging.debug(dt_string + " Email id and password are valid")
-            # logging.debug(dt_string + " Login api execution completed without errors")
+            logging.debug(dt_string + " Email id and password are valid")
+            logging.debug(dt_string + " Login api execution completed without errors")
             token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256')
             
             
@@ -203,10 +204,10 @@ def pm_loginn():
 
 def forgetpassword():
     try:
-        # now = datetime.datetime.now()
-        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        # logging.debug(dt_string + " User has made a call for forgot password API")
-        # logging.debug(dt_string + " Inside the forgot password API")
+        now = datetime.datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " User has made a call for forgot password API")
+        logging.debug(dt_string + " Inside the forgot password API")
         data = request.get_json()
         email_id = data['Email_ID']
         # Generate OTP
@@ -217,8 +218,8 @@ def forgetpassword():
         
         # Send OTP to User
         send_otp_email(email_id, otp)
-        # logging.debug(dt_string + " OTP sent successfully")
-        # logging.debug(dt_string + " Forgot password API execution completed without errors")
+        logging.debug(dt_string + " OTP sent successfully")
+        logging.debug(dt_string + " Forgot password API execution completed without errors")
 
         return jsonify({'msg': "OTP sent to your email"}), 200
 
@@ -228,10 +229,10 @@ def forgetpassword():
     
 def resetpassword():
     try:
-        # now = datetime.datetime.now()
-        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        # logging.debug(dt_string + " User has made a call for password reset API")
-        # logging.debug(dt_string + " Inside the password reset API")
+        now = datetime.datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " User has made a call for password reset API")
+        logging.debug(dt_string + " Inside the password reset API")
         data = request.get_json()
         email_id = data['Email_ID']
         otp = data['otp']
@@ -240,11 +241,11 @@ def resetpassword():
         # Retrieve the stored OTP associated with the user
         stored_otp = get_stored_otp(email_id)           
         if stored_otp == otp:
-            # logging.debug(dt_string + " OTP is valid")
+            logging.debug(dt_string + " OTP is valid")
             return jsonify({'msg': "OTP verified. Proceed to set new password."}), 200
 
         else:
-            # logging.debug(dt_string + " OTP is invalid")
+            logging.debug(dt_string + " OTP is invalid")
             return jsonify({'error': "Invalid OTP"}), 400
 
     except Exception as e:
@@ -254,10 +255,10 @@ def resetpassword():
 def setpassword():
     try:
 
-        # now = datetime.datetime.now()
-        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        # logging.debug(dt_string + " User has made a call for setting new password API")
-        # logging.debug(dt_string + " Inside the set password API")
+        now = datetime.datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " User has made a call for setting new password API")
+        logging.debug(dt_string + " Inside the set password API")
         data = request.get_json()
         new_password = data['new_password']
         # Retrieve the email from the global variable
@@ -277,8 +278,8 @@ def setpassword():
         stored_otp = None
         reset_email = None
         
-        # logging.debug(dt_string + " Password reset successful")
-        # logging.debug(dt_string + " Set password API execution completed without errors")
+        logging.debug(dt_string + " Password reset successful")
+        logging.debug(dt_string + " Set password API execution completed without errors")
         
         return jsonify({'msg': "Password reset successful"}), 200
 
