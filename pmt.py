@@ -150,27 +150,27 @@ def ShowEmailsTeams():
 
 def pm_loginn():
     try:
-        now = datetime.now()
-        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
-        logging.debug(dt_string + " User has made a call for login api")
-        logging.debug(dt_string + " Inside the Login api ")
+        # now = datetime.now()
+        # dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        # logging.debug(dt_string + " User has made a call for login api")
+        # logging.debug(dt_string + " Inside the Login api ")
         data = request.get_json()
         Email_ID = data['Email_ID']
         Password = data['password']
         cursor = mydb.cursor()
-        logging.debug(dt_string + " Checking for valid email")
+        # logging.debug(dt_string + " Checking for valid email")
         query1 = "SELECT * FROM Users WHERE Email_ID=%s"
         values1 = (Email_ID,)
         cursor.execute(query1, values1)
         users1 = cursor.fetchone()
-        logging.debug(dt_string + " Email Checking Query executed successfully")
-        logging.debug(dt_string + " Query result is ", users1)
+        # logging.debug(dt_string + " Email Checking Query executed successfully")
+        # logging.debug(dt_string + " Query result is ", users1)
         if not users1:
-            logging.debug(dt_string + " Email id is not valid")
+            # logging.debug(dt_string + " Email id is not valid")
             return jsonify({'error': "Email is invalid"}), 400
         else:
             flag = True
-            logging.debug(dt_string + " Checking for valid password")
+            #logging.debug(dt_string + " Checking for valid password")
             print("original password is",Password)
             hashed_password =hashlib.sha256(Password.encode('utf-8')).hexdigest()
             print("password is :", hashed_password)
@@ -178,10 +178,10 @@ def pm_loginn():
             values2 = (hashed_password,)
             cursor.execute(query2, values2)
             users2 = cursor.fetchone()
-            logging.debug(dt_string + " Password Checking Query executed successfully")
-            logging.debug(dt_string + " Query result is ", users2)
+            # logging.debug(dt_string + " Password Checking Query executed successfully")
+            # logging.debug(dt_string + " Query result is ", users2)
             if not users2:
-                logging.debug(dt_string + " Password is not valid")
+                # logging.debug(dt_string + " Password is not valid")
                 return jsonify({'error': 'Password is invalid'}), 400
             else:
                 flag2 = True
@@ -190,8 +190,8 @@ def pm_loginn():
             values3 = (hashed_password,Email_ID)
             cursor.execute(query3, values3)
             users3 = cursor.fetchall()
-            logging.debug(dt_string + " Email id and password are valid")
-            logging.debug(dt_string + " Login api execution completed without errors")
+            # logging.debug(dt_string + " Email id and password are valid")
+            # logging.debug(dt_string + " Login api execution completed without errors")
             token = jwt.encode({'username': "Email_ID"}, 'your_secret_key', algorithm='HS256')
             
             
