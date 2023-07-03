@@ -21,8 +21,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-import os
-import smtplib
+
+
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -65,6 +65,20 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
+
+
+        
+@app.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    return forgetpassword()
+    
+@app.route('/reset-password', methods=['POST'])
+def reset_password():
+    return resetpassword()
+
+@app.route('/set-password', methods=['POST'])
+def set_password():
+    return setpassword()
 
 @app.route('/AddWorkFlow', methods=['POST'])
 #@token_required
