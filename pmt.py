@@ -10,6 +10,7 @@ import datetime
 import logging
 import smtplib
 import random
+import hashlib
 import secrets
 import os
 
@@ -264,18 +265,21 @@ def setpassword():
 
         # Perform the password reset
         # Update the user's password with the new password
-
+        hashed_password =hashlib.sha256(new_password.encode('utf-8')).hexdigest()
+        print("password is :", hashed_password)
         cursor = mydb.cursor()
         query = "UPDATE Users SET Password = %s WHERE Email_ID = %s"
-        values = (new_password, reset_email)
+        values = (hashed_password, reset_email)
         cursor.execute(query, values)
         mydb.commit()
         # Clear the global variables after the password reset
 
         stored_otp = None
         reset_email = None
+        
         logging.debug(dt_string + " Password reset successful")
         logging.debug(dt_string + " Set password API execution completed without errors")
+        
         return jsonify({'msg': "Password reset successful"}), 200
 
     except Exception as e:
