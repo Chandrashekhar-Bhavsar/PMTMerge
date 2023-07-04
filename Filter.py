@@ -310,12 +310,12 @@ def issuereport():
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside issuereport function.....")
         logging.debug(dt_string + " Adding the details into the database...")
-        query1 = "select count(issue_id) from Issue_Details where (status = 'COMPLETED' OR 'DONE') AND issue_id = (select issue_id from project_issue where Project_ID = Project_ID) " 
+        query1 = "select count(issue_id) from Issue_Details where (status = 'COMPLETED' OR 'DONE') AND issue_id in (select issue_id from project_issue where Project_ID = Project_ID) " 
         values1 = (Project_ID,)
         cursor.execute(query1, values1)
         completed=cursor.fetchall()
         
-        query2 = "select count(issue_id) from Issue_Details where status NOT IN ('COMPLETED' OR 'DONE') AND issue_id = (select issue_id from project_issue where Project_ID = Project_ID) " 
+        query2 = "select count(issue_id) from Issue_Details where status NOT IN ('COMPLETED' OR 'DONE') AND issue_id in (select issue_id from project_issue where Project_ID = Project_ID) " 
         values2 = (Project_ID,)
         cursor.execute(query2, values2)
         incompleted=cursor.fetchall()
