@@ -775,10 +775,8 @@ def user_delete(user_ID):
         values2 = (user_ID,)
         cursor.execute(query2,values2)
         mydb.commit()
-        
-        
+               
         return jsonify({"msg":"User Successfully deleted."}),200
-
 
 
 def commentadd(ID, description,user_ID):
