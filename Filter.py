@@ -317,7 +317,7 @@ def issuereport():
         completed=cursor.fetchall()
         
         query2 = "select count(i.issue_id) from Issue_Details i join project_issue p on i.issue_id = p.issue_id where (status != %s OR %s ) and (p.project_id=%s)" 
-        values2 = (Project_ID,)
+        values2 = ("COMPLETED","DONE",Project_ID)
         cursor.execute(query2, values2)
         incompleted=cursor.fetchall()
     
