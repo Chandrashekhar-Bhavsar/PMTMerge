@@ -480,29 +480,33 @@ def delete_comments(comment_ID):
 
 
 
-def create_project_query(user_ID,user_name,project_name, project_description, 
+def create_project_query(user_ID,user_name,project_name, project_description,
                    planned_sd, planned_ed, actual_sd, actual_ed,
-                  planned_hours, actual_hours, status, project_lead, 
-                  client_name, risk, mitigation):
+                  planned_hours, actual_hours, status, project_lead,
+                 client_name, risk, mitigation):
         cursor = mydb.cursor()
         query1 = "INSERT INTO Project_Details (Project_Name, Project_Description, Planned_SD, Planned_ED,Actual_SD, Actual_ED, Planned_Hours, Actual_Hours, Status, Project_Lead, Client_Name, Risk, Mitigation , ownby_id ,ownby_name) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s)"
         values1 = (project_name, project_description, planned_sd, planned_ed, actual_sd, actual_ed,
                   planned_hours, actual_hours, status, project_lead, client_name, risk, mitigation,user_ID,user_name)
         cursor.execute(query1, values1)
         mydb.commit()
+
         query2 =  "select Project_ID from Project_Details where project_name = %s;"
         values2 = (project_name,)
         cursor.execute(query2,values2)
         id =cursor.fetchone()
         print(id[0])
+
         query3 = "Insert into project_member(user_ID,Project_ID) values(%s,%s);"
         values3 = (user_ID,id[0])
         cursor.execute(query3,values3)
-        mydb.commit()
-        
-        
-        return jsonify({"message": "Project created successfully"}), 200
 
+        query4 = "Insert into project_status(ID,status) values(%s,'not updated');"
+        values = (id[0],)
+        cursor.execute(query4,values)
+        mydb.commit()
+   
+        return jsonify({"message": "Project created successfully"}), 200
 
 
 
