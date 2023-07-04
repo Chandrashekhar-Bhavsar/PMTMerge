@@ -13,7 +13,6 @@ from issue import *
 from pmt import *
 from UserManagement_module import *
 import logging
-import datetime
 from status_module import *
 from flask_mail import Mail, Message
 from email.mime.multipart import MIMEMultipart
