@@ -962,8 +962,7 @@ def displaystatus(ID):
         print(id1)
         if(id1 is None):
                 return jsonify({"error":"no status found with this id"}),400
-        
-        
+               
         logging.debug(dt_string + " displaying status for id  ",ID)
         return jsonify(id1),200
 

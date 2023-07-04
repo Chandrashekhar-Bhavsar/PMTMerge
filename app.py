@@ -138,6 +138,10 @@ def DetailedIssue():
 @app.route('/IssueByDay', methods=['POST'])
 def IssueByDay():
     return IssueByDayFilteration()
+
+@app.route('/issue_report', methods=['POST'])
+def issue_report():
+    return issuereport()
     
     
 ############################################################
@@ -391,6 +395,8 @@ def add_attachment():
 @app.route('/display_attachment', methods=['POST'])
 def display_attachment():
     return display_attachments()
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

@@ -1,22 +1,18 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 from flask_cors import CORS,cross_origin
-import bcrypt
-from flask_bcrypt import bcrypt
 from connection import *
 from queries import *
 import smtplib
 import random
 import logging
 from datetime import datetime
-from flask_bcrypt import Bcrypt
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 cors = CORS(app)
 CORS(app, origins='*')
-bcrypt = Bcrypt(app)
 
 def add_status():
 

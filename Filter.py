@@ -300,3 +300,30 @@ def IssueByDayFilteration():
     
     except Exception as e:
         return jsonify({"error": "bad values"}), 400  
+    
+
+def issuereport():
+    try:
+        data = request.get_json()
+        Project_ID = data['Project_ID']
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside issuereport function.....")
+        logging.debug(dt_string + " Adding the details into the database...")
+        query1 = "select count(issue_id) from Issue_Details where (status = 'COMPLETED' OR 'DONE') AND issue_id = (select issue_id from project_issue where Project_ID = Project_ID) " 
+        values1 = (Project_ID,)
+        cursor.execute(query1, values1)
+        completed=cursor.fetchall()
+        
+        query2 = "select count(issue_id) from Issue_Details where status NOT IN ('COMPLETED' OR 'DONE') AND issue_id = (select issue_id from project_issue where Project_ID = Project_ID) " 
+        values2 = (Project_ID,)
+        cursor.execute(query2, values2)
+        incompleted=cursor.fetchall()
+    
+                        
+        logging.debug(dt_string + " Details successfully updated into the database....")
+        return jsonify({'Completed': completed[0], 'InCompleted': incompleted[0]}), 200
+    
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return jsonify({'error': 'An error occurred while fetching project details'}), 400
