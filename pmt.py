@@ -7,7 +7,6 @@ from flask_cors import CORS,cross_origin
 from connection import *
 from queries import *
 import datetime
-from datetime import datetime
 import logging
 import smtplib
 import random
