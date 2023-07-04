@@ -323,7 +323,7 @@ def issuereport():
     
                         
         logging.debug(dt_string + " Details successfully updated into the database....")
-        return jsonify({'Completed': completed[0], 'InCompleted': incompleted[0]}), 200
+        return jsonify({'Completed': completed[0][0], 'InCompleted': incompleted[0][0]}), 200
     
     except Exception as e:
         print("An error occurred:", str(e))
