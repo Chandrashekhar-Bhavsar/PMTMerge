@@ -352,6 +352,30 @@ def Assign_User():
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred while fetching project details'}), 400
 
+def unassignuser():
+    try:
+        data = request.get_json()  
+        user_ID = data['user_ID']
+        now = datetime.now()
+        dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        logging.debug(dt_string + " Inside unassignuser function.....")
+        query1 = "delete from project_member where user_ID=%s;" 
+        values1 = (user_ID,)
+        cursor.execute(query1, values1)
+        
+        query2 = "delete from issue_member where user_ID=%s;" 
+        values2 = (user_ID,)
+        cursor.execute(query2, values2)
+        mydb.commit()
+                        
+        logging.debug(dt_string + " The member is successfully unasssigned")
+        return jsonify({'msg':"Removed"}), 200
+    
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return jsonify({'error': 'An error occurred while fetching project details'}), 400
+    
+    
 
 def get_users_from_project():
     try:

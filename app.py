@@ -217,6 +217,9 @@ def add_user():
 def assign_user():
    return Assign_User()
    
+@app.route('/unassign_user', methods=['POST'])
+def unassign_user():
+   return unassignuser()
 
 @app.route('/userdetails_project', methods=['POST'])
 def user_details_project():
