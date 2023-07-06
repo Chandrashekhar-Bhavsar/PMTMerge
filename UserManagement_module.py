@@ -321,7 +321,7 @@ def showuser():
     
 
 
-def delete_users():
+def  delete_users():
     try:    
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))

@@ -303,7 +303,7 @@ def create_projects():
         print(data)
         user_ID=data['user_ID']
         user_name=data['user_name']
-        project_name = data['project_name']
+        project_name = str(data['project_name'])
         project_description = data['project_description']
         planned_sd = data['planned_sd']
         planned_ed = data['planned_ed']
