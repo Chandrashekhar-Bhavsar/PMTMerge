@@ -35,7 +35,38 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 
 @app.route('/')
 def home():
-    return '<h1>Welcome Team :To the Project Management Tool</h1>'
+    return '''<!DOCTYPE html>
+<html>
+<head>
+  <title>Project Planner Application</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      color: #0066cc;
+      font-size: 36px;
+      margin-top: 100px;
+    }
+
+    p {
+      color: #666666;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Project Planner Application</h1>
+  <p>Start managing your projects efficiently!</p>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlzsv2D-7l5-OIWNKeoGUKeVf24vRHBeRVgPIon3eL&s" alt="trial" height="100px" width="500px"" alt="Project Planner Image" width="500" height="200">
+</body>
+</html>
+'''
+
 
 
 ############################################################
