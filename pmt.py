@@ -356,15 +356,16 @@ def unassignuser():
     try:
         data = request.get_json()  
         user_ID = data['user_ID']
+        Project_ID = data['Project_ID']
         now = datetime.now()
         dt_string = str(now.strftime("%d/%m/%Y %H:%M:%S"))
         logging.debug(dt_string + " Inside unassignuser function.....")
-        query1 = "delete from project_member where user_ID=%s;" 
-        values1 = (user_ID,)
+        query1 = "delete from project_member where user_ID=%s and Project_ID=%s;" 
+        values1 = (user_ID,Project_ID)
         cursor.execute(query1, values1)
         
-        query2 = "delete from issue_member where user_ID=%s;" 
-        values2 = (user_ID,)
+        query2 = "delete from issue_member where user_ID=%s adn Project_ID=%s;" 
+        values2 = (user_ID,Project_ID)
         cursor.execute(query2, values2)
         mydb.commit()
                         
